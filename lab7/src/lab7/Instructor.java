@@ -1,13 +1,55 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package lab7;
 
-/**
- *
- * @author Victus
- */
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Instructor {
     
+    String userID;
+    String role;
+    String username;
+    String email;
+    String passwordHash;
+    ArrayList<Course> createdCourses;
+
+    public Instructor(String userID, String role, String username, String email, String passwordHash, ArrayList<Course> createdCourses) {
+        this.userID = userID;
+        this.role = "Instructor";
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.createdCourses = createdCourses;
+    }
+    
+    
+    public void createCourse(Course course){
+        createdCourses.add(course);
+        
+    }
+    public void editCourse(courseID){
+        for(Course course : createdCourses){
+            if(course.getCourseID.equals(courseID)){
+                
+            }
+        }
+    }
+    public void addLesson(Lesson lesson, String courseID){
+         for (Course course : createdCourses) {
+        if (course.getCourseID().equals(courseID)) {
+            course.addLesson(lesson);
+            break;
+        }
+    }
+    }
+    public void deleteLesson(String lessonID, String courseID){
+        
+    }
+    public void editLesson(String lessonID){
+        
+    }
+    
+    public void viewEnrolledStudents(String filename){
+        
+    }
 }
