@@ -3,6 +3,7 @@ package lab7;
 
 import java.util.ArrayList;
 import java.util.Date;
+import 
 
 public class Instructor {
     
@@ -43,10 +44,17 @@ public class Instructor {
     }
     }
     public void deleteLesson(String lessonID, String courseID){
-        
+        for (Course course : createdCourses) {
+        course.removeLesson(lessonID);
+    }
     }
     public void editLesson(String lessonID){
-        
+        for(Course course : createdCourses){
+            if(course.getLessonID.equals(lessonID)){
+                
+                break;
+            }
+        }
     }
     
     public void viewEnrolledStudents(String filename){
