@@ -1,22 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package lab7;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author Victus
- */
-public class InstructorDashboard extends javax.swing.JPanel {
 
-    /**
-     * Creates new form InstructorDashboard
-     */
-    public InstructorDashboard() {
+public class InstructorDashboard extends javax.swing.JPanel {
+    private JFrame parentFrame;
+    public InstructorDashboard(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
         initComponents();
     }
 
