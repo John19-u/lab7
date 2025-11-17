@@ -5,8 +5,7 @@
 package lab7;
 
 import java.security.NoSuchAlgorithmException;
-import static javatraining.SHA256Hasher.hashPassword;
-import javax.swing.JOptionPane;
+import static lab7.SHA256Hasher.hashPassword;
 
 /**
  *
