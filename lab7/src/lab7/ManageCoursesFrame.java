@@ -12,9 +12,12 @@ import javax.swing.*;
  */
 public class ManageCoursesFrame extends javax.swing.JFrame {
 
+  
     private DefaultListModel<String> model;
-    
-    public ManageCoursesFrame() {
+    private CourseDatabase courseDB;   
+
+    public ManageCoursesFrame(CourseDatabase db) {
+        this.courseDB = db;
         initComponents();
         model = new DefaultListModel<>();
         courseList.setModel(model);
@@ -127,7 +130,7 @@ public class ManageCoursesFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_viewStudentsActionPerformed
 
     private void addCourse() {
-        String id = JOptionPane.showInputDialog("Enter Course ID:");
+       String id = JOptionPane.showInputDialog("Enter Course ID:");
         if (id == null || id.trim().isEmpty()) return;
 
         String title = JOptionPane.showInputDialog("Enter Title:");
@@ -137,8 +140,8 @@ public class ManageCoursesFrame extends javax.swing.JFrame {
         if (desc == null || desc.trim().isEmpty()) return;
 
         try {
-            CourseManagement course = new CourseManagement(id, title, desc, "inst1");
-            CourseDatabase.courses.add(course);
+            Course c = new Course(id, title, desc, "inst1");
+            courseDB.addCourse(c);
             refreshList();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -146,26 +149,31 @@ public class ManageCoursesFrame extends javax.swing.JFrame {
     } 
     
     private void openLessonManager() {
-        int index = courseList.getSelectedIndex();
+         int index = courseList.getSelectedIndex();
         if (index == -1) {
             JOptionPane.showMessageDialog(this, "Please select a course.");
             return;
         }
-        new ManageLessonsFrame(CourseDatabase.courses.get(index)).setVisible(true);
+
+        Course selected = courseDB.getAllCourses().get(index);
+
+        new ManageLessonsFrame(selected, courseDB).setVisible(true);
     }
 
        private void openStudentsView() {
-        int index = courseList.getSelectedIndex();
+         int index = courseList.getSelectedIndex();
         if (index == -1) {
             JOptionPane.showMessageDialog(this, "Please select a course.");
             return;
         }
-        new ViewStudentsFrame(CourseDatabase.courses.get(index)).setVisible(true);
-    }
-    /** Refresh the list */
-    private void refreshList() {
+
+        Course selected = courseDB.getAllCourses().get(index);
+
+        new ViewStudentsFrame(selected).setVisible(true);
+    } 
+        private void refreshList() {
         model.clear();
-        for (CourseManagement c : CourseDatabase.courses) {
+        for (Course c : courseDB.getAllCourses()) {
             model.addElement(c.getCourseId() + ": " + c.getTitle());
         }
     }

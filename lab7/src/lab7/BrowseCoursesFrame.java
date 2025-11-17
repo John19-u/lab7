@@ -13,13 +13,15 @@ import javax.swing.*;
  */
 public class BrowseCoursesFrame extends javax.swing.JFrame {
 
-   private DefaultListModel<String> model;
-   
-    public BrowseCoursesFrame() {
-         initComponents();
+    private DefaultListModel<String> model;
+    private CourseDatabase courseDB;   
+
+    public BrowseCoursesFrame(CourseDatabase db) {
+        this.courseDB = db;
+        initComponents();
         model = new DefaultListModel<>();
         courseList.setModel(model);
-        refresh();
+        refreshList();
         setTitle("Browse Courses");
         setLocationRelativeTo(null);
     }
@@ -112,13 +114,15 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
             return;
         }
 
-        CourseManagement c = CourseDatabase.courses.get(index);
+        Course selected = courseDB.getAllCourses().get(index);
 
         String studentId = JOptionPane.showInputDialog(this, "Enter Your Student ID:");
         if (studentId == null || studentId.trim().isEmpty()) return;
 
-        c.enrollStudent(studentId);
-        JOptionPane.showMessageDialog(this, "Enrolled Successfully!");           
+        selected.enrollStudent(studentId);
+        courseDB.save(); 
+
+        JOptionPane.showMessageDialog(this, "Enrolled Successfully!");            
     }//GEN-LAST:event_enrollActionPerformed
 
     private void viewLessonsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLessonsActionPerformed
@@ -128,12 +132,14 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
             return;
         }
 
-        new ViewLessonsFrame(CourseDatabase.courses.get(index)).setVisible(true);
+        Course selected = courseDB.getAllCourses().get(index);
+
+        new ViewLessonsFrame(selected).setVisible(true);
     }//GEN-LAST:event_viewLessonsActionPerformed
  
-       private void refresh() {
+       private void refreshList() {
         model.clear();
-        for (CourseManagement c : CourseDatabase.courses) {
+        for (Course c : courseDB.getAllCourses()) {
             model.addElement(c.getTitle());
         }
     }
