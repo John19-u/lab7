@@ -140,7 +140,7 @@ public class ManageCoursesFrame extends javax.swing.JFrame {
         if (desc == null || desc.trim().isEmpty()) return;
 
         try {
-            Course c = new Course(id, title, desc, "inst1");
+            CourseManagement c = new CourseManagement(id, title, desc, "inst1");
             courseDB.addCourse(c);
             refreshList();
         } catch (Exception ex) {
@@ -155,7 +155,7 @@ public class ManageCoursesFrame extends javax.swing.JFrame {
             return;
         }
 
-        Course selected = courseDB.getAllCourses().get(index);
+        CourseManagement selected = courseDB.getAllCourses().get(index);
 
         new ManageLessonsFrame(selected, courseDB).setVisible(true);
     }
@@ -167,13 +167,13 @@ public class ManageCoursesFrame extends javax.swing.JFrame {
             return;
         }
 
-        Course selected = courseDB.getAllCourses().get(index);
+        CourseManagement selected = courseDB.getAllCourses().get(index);
 
         new ViewStudentsFrame(selected).setVisible(true);
     } 
         private void refreshList() {
         model.clear();
-        for (Course c : courseDB.getAllCourses()) {
+        for (CourseManagement c : courseDB.getAllCourses()) {
             model.addElement(c.getCourseId() + ": " + c.getTitle());
         }
     }

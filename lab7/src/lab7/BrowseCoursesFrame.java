@@ -26,6 +26,10 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    BrowseCoursesFrame() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,7 +118,7 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
             return;
         }
 
-        Course selected = courseDB.getAllCourses().get(index);
+        CourseManagement selected = (CourseManagement) courseDB.getAllCourses().get(index);
 
         String studentId = JOptionPane.showInputDialog(this, "Enter Your Student ID:");
         if (studentId == null || studentId.trim().isEmpty()) return;
@@ -132,21 +136,17 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
             return;
         }
 
-        Course selected = courseDB.getAllCourses().get(index);
+        CourseManagement selected = (CourseManagement) courseDB.getAllCourses().get(index);
 
         new ViewLessonsFrame(selected).setVisible(true);
     }//GEN-LAST:event_viewLessonsActionPerformed
  
        private void refreshList() {
         model.clear();
-        for (Course c : courseDB.getAllCourses()) {
+        for (CourseManagement c : courseDB.getAllCourses()) {
             model.addElement(c.getTitle());
         }
     }
-       
-    
-    
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BrowseCoursesFrame;
     private javax.swing.JList<String> courseList;

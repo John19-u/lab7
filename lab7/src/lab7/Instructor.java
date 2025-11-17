@@ -6,13 +6,21 @@ import java.util.Date;
 
 public class Instructor {
     
-    String userID;
-    String role;
-    String username;
-    String email;
-    String passwordHash;
-    ArrayList<CourseManagement> createdCourses;
-    CourseDatabase database;
+    private String userID;
+    private String role;
+    private String username;
+    private String email;
+    private String passwordHash;
+    private ArrayList<CourseManagement> createdCourses;
+    private CourseDatabase database;
+
+    public Instructor(String userID, String role, String username, String email, String passwordHash) {
+        this.userID = userID;
+        this.role = role;
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
 
     public Instructor(String userID, String role, String username, String email, String passwordHash, ArrayList<CourseManagement> createdCourses, CourseDatabase database) {
         this.userID = userID;
@@ -35,7 +43,7 @@ public class Instructor {
     public void editCourse(String courseID){
         for(CourseManagement course : createdCourses){
             if(course.getCourseId().equals(courseID)){
-                database.editCourse(courseID, createdCourses);
+                database.editCourse(courseID, course);
                 break;
             }
         }
@@ -98,5 +106,61 @@ public class Instructor {
 
     }
 }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public ArrayList<CourseManagement> getCreatedCourses() {
+        return createdCourses;
+    }
+
+    public void setCreatedCourses(ArrayList<CourseManagement> createdCourses) {
+        this.createdCourses = createdCourses;
+    }
+
+    public CourseDatabase getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(CourseDatabase database) {
+        this.database = database;
+    }
 
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class CourseDatabase {
 
-    private ArrayList<Course> coursesList;
+    private ArrayList<CourseManagement> coursesList;
 
     private final File file;
     private final Gson gson;
@@ -53,7 +53,7 @@ public class CourseDatabase {
         }
     }
 
-    public void addCourse(Course c) {
+    public void addCourse(CourseManagement c) {
         if (findCourseById(c.getCourseId()) != null)
             throw new IllegalArgumentException("Course ID already exists!");
 
@@ -61,7 +61,7 @@ public class CourseDatabase {
         save();
     }
 
-    public boolean editCourse(String courseId, Course updatedCourse) {
+    public boolean editCourse(String courseId,CourseManagement updatedCourse) {
         for (int i = 0; i < coursesList.size(); i++) {
             if (coursesList.get(i).getCourseId().equals(courseId)) {
                 coursesList.set(i, updatedCourse);
@@ -82,19 +82,19 @@ public class CourseDatabase {
         }
         return false;
     }
-    public Course findCourseById(String courseId) {
-        for (Course c : coursesList) {
+    public CourseManagement findCourseById(String courseId) {
+        for (CourseManagement c : coursesList) {
             if (c.getCourseId().equals(courseId))
                 return c;
         }
         return null;
     }
 
-    public ArrayList<Course> getAllCourses() {
+    public ArrayList<CourseManagement> getAllCourses() {
         return coursesList;
     }
 
     private static class DatabaseWrapper {
-        ArrayList<Course> coursesList;
+        ArrayList<CourseManagement> coursesList;
     }
 }

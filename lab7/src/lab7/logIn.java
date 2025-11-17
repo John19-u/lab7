@@ -4,6 +4,9 @@
  */
 package lab7;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class logIn extends javax.swing.JFrame {
@@ -140,18 +143,22 @@ public class logIn extends javax.swing.JFrame {
         String username = textusername.getText();
         String password = new String(textpassword.getPassword());
         boolean enter = false;
-        enter = usermanagement.login(username, password, status);
+        try {
+            enter = usermanagement.login(username, password, status);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(logIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if (enter && status == "Student") {
             this.getContentPane().removeAll();
 
-            Homepage homepagePanel = new Homepage(this);//to be edited
+            StudentDashboard homepagePanel = new StudentDashboard(this);//to be edited
             this.setContentPane(homepagePanel);//to be edited
 
             this.revalidate();
             this.repaint();
         } else if (enter && status == "Instructor") {
             this.getContentPane().removeAll();
-            Homepage homepagePanel = new Homepage(this);//to be edited
+            InstructorDashboard homepagePanel = new InstructorDashboard(this);//to be edited
             this.setContentPane(homepagePanel);// to be edited
             this.revalidate();
             this.repaint();

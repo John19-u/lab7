@@ -18,6 +18,10 @@ public class ViewLessonsFrame extends javax.swing.JFrame {
         loadLessons();
     }
 
+    ViewLessonsFrame(CourseManagement selected) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     private void loadLessons() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (Lesson l : lessons) {

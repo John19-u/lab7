@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public class UserDatabase {
 
-    private ArrayList<Student> studentsList;
-    private ArrayList<InstructorManagement> instructorsList;
+    private ArrayList<StudentManagement> studentsList;
+    private ArrayList<Instructor> instructorsList;
 
     private final File file;
     private final Gson gson;
@@ -74,7 +74,7 @@ public class UserDatabase {
     }
 
     public void addStudent(StudentManagement s) {
-        if (findStudentById(s.getUserId()) != null) {
+        if (findStudentById(s.getUserid()) != null) {
             throw new IllegalArgumentException("Student ID already exists!");
         }
 
@@ -84,7 +84,7 @@ public class UserDatabase {
 
     public StudentManagement findStudentById(String id) {
         for (StudentManagement s : studentsList) {
-            if (s.getUserId().equals(id)) {
+            if (s.getUserid().equals(id)) {
                 return s;
             }
         }
@@ -95,8 +95,8 @@ public class UserDatabase {
         return studentsList;
     }
 
-    public void addInstructorManagement(InstructorManagement i) {
-        if (findInstructorManagementById(i.getUserId()) != null) {
+    public void addInstructorManagement(Instructor i) {
+        if (findInstructorManagementById(i.getUserID()) != null) {
             throw new IllegalArgumentException("InstructorManagement ID already exists!");
         }
 
@@ -104,22 +104,22 @@ public class UserDatabase {
         save();
     }
 
-    public InstructorManagement findInstructorManagementById(String id) {
-        for (InstructorManagement i : instructorsList) {
-            if (i.getUserId().equals(id)) {
+    public Instructor findInstructorManagementById(String id) {
+        for (Instructor i : instructorsList) {
+            if (i.getUserID().equals(id)) {
                 return i;
             }
         }
         return null;
     }
 
-    public ArrayList<InstructorManagement> getAllInstructorManagements() {
+    public ArrayList<Instructor> getAllInstructorManagements() {
         return instructorsList;
     }
 
     public void deleteStudent(String studentId) {
         for (int i = 0; i < studentsList.size(); i++) {
-            if (studentsList.get(i).getUserId().equals(studentId)) {
+            if (studentsList.get(i).getUserid().equals(studentId)) {
                 studentsList.remove(i);
                 save();
 
@@ -128,9 +128,9 @@ public class UserDatabase {
 
     }
 
-    public void editInstructor(String instructorId, InstructorManagement updatedInstructor) {
+    public void editInstructor(String instructorId, Instructor updatedInstructor) {
         for (int i = 0; i < instructorsList.size(); i++) {
-            if (instructorsList.get(i).getUserId().equals(instructorId)) {
+            if (instructorsList.get(i).getUserID().equals(instructorId)) {
                 instructorsList.set(i, updatedInstructor);
                 save();
 
@@ -141,7 +141,7 @@ public class UserDatabase {
 
     public void deleteInstructor(String instructorId) {
         for (int i = 0; i < instructorsList.size(); i++) {
-            if (instructorsList.get(i).getUserId().equals(instructorId)) {
+            if (instructorsList.get(i).getUserID().equals(instructorId)) {
                 instructorsList.remove(i);
                 save();
 
@@ -152,7 +152,7 @@ public class UserDatabase {
 
     public void editStudent(String studentId, StudentManagement updatedStudent) {
         for (int i = 0; i < studentsList.size(); i++) {
-            if (studentsList.get(i).getUserId().equals(studentId)) {
+            if (studentsList.get(i).getUserid().equals(studentId)) {
                 studentsList.set(i, updatedStudent);
                 save();
 
@@ -164,6 +164,6 @@ public class UserDatabase {
     private static class DatabaseWrapper {
 
         ArrayList<StudentManagement> studentsList;
-        ArrayList<InstructorManagement> instructorsList;
+        ArrayList<Instructor> instructorsList;
     }
 }

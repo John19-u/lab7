@@ -1,7 +1,13 @@
+package lab7;
 
-public class NewJPanel extends javax.swing.JPanel {
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
-    public NewJPanel(javax.swing.JFrame frame) {
+public class StudentDashboard extends javax.swing.JPanel {
+
+    private javax.swing.JFrame mainFrame;
+
+    public StudentDashboard(javax.swing.JFrame frame) {
         this.mainFrame = frame;
         initComponents();
     }
@@ -77,42 +83,39 @@ public class NewJPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.getContentPane().removeAll();
-
-        SignUp signupPanel = new SignUp(this);
-        this.setContentPane(signupPanel);
-
-        this.revalidate();
-        this.repaint();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.getContentPane().removeAll();
-
-        SignUp signupPanel = new SignUp(this);
-        this.setContentPane(signupPanel);
-
-        this.revalidate();
-        this.repaint();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        this.getContentPane().removeAll();
-
-        SignUp signupPanel = new SignUp(this);
-        this.setContentPane(signupPanel);
-
-        this.revalidate();
-        this.repaint();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       mainFrame.getContentPane().removeAll();
-
-        logIn homepagePanel = new logIn();
+        mainFrame.getContentPane().removeAll();
+        BrowseCoursesFrame homepagePanel = new  BrowseCoursesFrame();
         mainFrame.setContentPane(homepagePanel);
         mainFrame.revalidate();
         mainFrame.repaint();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        mainFrame.getContentPane().removeAll();
+        BrowseCoursesFrame homepagePanel = new  BrowseCoursesFrame();
+        mainFrame.setContentPane(homepagePanel);
+        mainFrame.revalidate();
+        mainFrame.repaint();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        mainFrame.getContentPane().removeAll();
+        BrowseCoursesFrame homepagePanel = new  BrowseCoursesFrame();
+        mainFrame.setContentPane(homepagePanel);
+        mainFrame.revalidate();
+        mainFrame.repaint();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (frame != null) {
+            // Close current frame
+            frame.dispose();
+
+            // Create and show new login frame
+            logIn loginFrame = new logIn();
+            loginFrame.setVisible(true);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
 
@@ -122,4 +125,5 @@ public class NewJPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -5,6 +5,7 @@
 package lab7;
 
 import java.security.NoSuchAlgorithmException;
+import static lab7.SHA256Hasher.checkPassword;
 import static lab7.SHA256Hasher.hashPassword;
 
 /**
@@ -15,17 +16,17 @@ public class Usermanagement {
     private UserDatabase userdatabase;
    
    
-    public boolean login(String userId,String password,String status){
+    public boolean login(String userId,String password,String status) throws NoSuchAlgorithmException{
     if (status == "Student") {
-            Student s = (userdatabase.findStudentById(userId));
-            if (s != null && checkPassword(password,s.getpassword())) {
+            StudentManagement s = (userdatabase.findStudentById(userId));
+            if (s != null && checkPassword(password,s.getPassword())) {
                return true;
             } else {
                return false;
             }
         } else if (status == "Instructor") {
-            InstructorMangement ins = userdatabase.findInstructorManagementById(userId);
-            if (ins != null && checkPassword(password,ins.getpassword())) {
+            Instructor ins = userdatabase.findInstructorManagementById(userId);
+            if (ins != null && checkPassword(password,ins.getPasswordHash())) {
                 return true;
             } else {
                 return false;
@@ -37,10 +38,10 @@ public class Usermanagement {
      try{
         userpassword= hashPassword(userpassword);
         if(userrole=="Student"){
-        userdatabase.addStudent(new StudentManagement(userId,userrole,username,useremail,userpassword));
+        userdatabase.addStudent(new StudentManagement(userid,userrole,username,useremail,userpassword));
         }
         else{
-        userdatabase.addInstructorManagement(new InstructorManagement(userId,userrole,username,useremail,userpassword))
+        userdatabase.addInstructorManagement(new Instructor(userid,userrole,username,useremail,userpassword));
         }
      }
      catch(NoSuchAlgorithmException ex){
