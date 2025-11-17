@@ -3,7 +3,6 @@ package lab7;
 
 import java.util.ArrayList;
 import java.util.Date;
-import 
 
 public class Instructor {
     
@@ -12,52 +11,92 @@ public class Instructor {
     String username;
     String email;
     String passwordHash;
-    ArrayList<Course> createdCourses;
+    ArrayList<CourseManagement> createdCourses;
+    CourseDatabase database;
 
-    public Instructor(String userID, String role, String username, String email, String passwordHash, ArrayList<Course> createdCourses) {
+    public Instructor(String userID, String role, String username, String email, String passwordHash, ArrayList<CourseManagement> createdCourses, CourseDatabase database) {
         this.userID = userID;
-        this.role = "Instructor";
+        this.role = role;
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
         this.createdCourses = createdCourses;
+        this.database = database;
     }
+
     
     
-    public void createCourse(Course course){
+    
+    public void createCourse(CourseManagement course){
         createdCourses.add(course);
+        database.addCourse(course);
         
     }
-    public void editCourse(courseID){
-        for(Course course : createdCourses){
-            if(course.getCourseID.equals(courseID)){
-                
+    public void editCourse(String courseID){
+        for(CourseManagement course : createdCourses){
+            if(course.getCourseId().equals(courseID)){
+                database.editCourse(courseID, createdCourses);
+                break;
             }
         }
     }
     public void addLesson(Lesson lesson, String courseID){
-         for (Course course : createdCourses) {
-        if (course.getCourseID().equals(courseID)) {
+         for (CourseManagement course : createdCourses) {
+        if (course.getCourseId().equals(courseID)) {
             course.addLesson(lesson);
+            database.editCourse(courseID, course);
             break;
         }
     }
     }
     public void deleteLesson(String lessonID, String courseID){
-        for (Course course : createdCourses) {
-        course.removeLesson(lessonID);
+        for(CourseManagement course : createdCourses){
+            if(course.getCourseId().equals(courseID)){
+                ArrayList<Lesson> lessons = course.getLessons();
+                for (int i = 0; i < lessons.size(); i++) {
+                if (lessons.get(i).getLessonId().equals(lessonID)) {
+                    lessons.remove(i);
+                    database.editCourse(courseID, course);
+                    
+                    return;
+                }
+                }
+            }
+        }
     }
-    }
-    public void editLesson(String lessonID){
-        for(Course course : createdCourses){
-            if(course.getLessonID.equals(lessonID)){
-                
-                break;
+    public void editLesson(String lessonID, String courseId, Lesson newLesson){
+        for(CourseManagement course : createdCourses){
+            if(course.getCourseId().equals(courseId)){
+                ArrayList<Lesson> lessons = course.getLessons();
+                for (int i = 0; i < lessons.size(); i++) {
+                if (lessons.get(i).getLessonId().equals(lessonID)) {
+                    lessons.set(i, newLesson);
+                    database.editCourse(courseId, course);
+                    return;
+                }
+                }
             }
         }
     }
     
-    public void viewEnrolledStudents(String filename){
-        
+    public void viewEnrolledStudents() {
+    if (createdCourses == null || createdCourses.isEmpty()) {
+        return;
     }
+
+    for (CourseManagement course : createdCourses) {
+        ArrayList<String> students = course.getStudents();
+
+        if (students.isEmpty()) {
+            System.out.println("  No students enrolled.");
+        } else {
+            System.out.println("  Enrolled Students:");
+            for (String studentId : students) {
+                System.out.println("    - " + studentId);
+            }
+        }
+
+    }
+}
+
 }
