@@ -6,9 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class CourseDatabase {
-
     private ArrayList<CourseManagement> coursesList;
-
     private final File file;
     private final Gson gson;
 
@@ -33,7 +31,6 @@ public class CourseDatabase {
             if (wrapper != null && wrapper.coursesList != null) {
                 coursesList = wrapper.coursesList;
             }
-
         } catch (Exception e) {
             System.out.println("Error loading courses DB: " + e.getMessage());
         }
@@ -47,7 +44,6 @@ public class CourseDatabase {
             PrintWriter pw = new PrintWriter(new FileWriter(file));
             pw.print(gson.toJson(wrapper));
             pw.close();
-
         } catch (Exception e) {
             System.out.println("Error saving courses DB: " + e.getMessage());
         }
@@ -56,12 +52,11 @@ public class CourseDatabase {
     public void addCourse(CourseManagement c) {
         if (findCourseById(c.getCourseId()) != null)
             throw new IllegalArgumentException("Course ID already exists!");
-
         coursesList.add(c);
         save();
     }
 
-    public boolean editCourse(String courseId,CourseManagement updatedCourse) {
+    public boolean editCourse(String courseId, CourseManagement updatedCourse) {
         for (int i = 0; i < coursesList.size(); i++) {
             if (coursesList.get(i).getCourseId().equals(courseId)) {
                 coursesList.set(i, updatedCourse);
@@ -82,6 +77,7 @@ public class CourseDatabase {
         }
         return false;
     }
+
     public CourseManagement findCourseById(String courseId) {
         for (CourseManagement c : coursesList) {
             if (c.getCourseId().equals(courseId))
@@ -91,7 +87,17 @@ public class CourseDatabase {
     }
 
     public ArrayList<CourseManagement> getAllCourses() {
-        return coursesList;
+        return new ArrayList<>(coursesList);
+    }
+
+    public ArrayList<CourseManagement> getCoursesByInstructor(String instructorId) {
+        ArrayList<CourseManagement> result = new ArrayList<>();
+        for (CourseManagement course : coursesList) {
+            if (course.getInstructorId().equals(instructorId)) {
+                result.add(course);
+            }
+        }
+        return result;
     }
 
     private static class DatabaseWrapper {

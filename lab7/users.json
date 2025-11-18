@@ -1,0 +1,27 @@
+{
+  "studentsList": [
+    {
+      "username": "mahmoud",
+      "role": "Student",
+      "passwordHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+      "userId": "9451",
+      "email": "mahmoud@gmail.com",
+      "enrolledCourses": [
+        "1111"
+      ],
+      "progress": [
+        "1112"
+      ]
+    }
+  ],
+  "instructorsList": [
+    {
+      "userId": "9551",
+      "role": "Instructor",
+      "username": "abdo",
+      "email": "abdo@gmail.com",
+      "passwordHash": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414",
+      "createdCourses": []
+    }
+  ]
+}

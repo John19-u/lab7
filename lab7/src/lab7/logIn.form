@@ -50,7 +50,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="textusername" max="32767" attributes="0"/>
+                  <Component id="textEmail" max="32767" attributes="0"/>
                   <Component id="textpassword" pref="239" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jButton1" min="-2" pref="83" max="-2" attributes="0"/>
@@ -68,7 +68,7 @@
               <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="textusername" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
+                  <Component id="textEmail" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -95,7 +95,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Sitka Text" size="36" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="User Name:"/>
+        <Property name="text" type="java.lang.String" value="E-mail"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -109,14 +109,14 @@
         <Property name="text" type="java.lang.String" value="Password:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="textusername">
+    <Component class="javax.swing.JTextField" name="textEmail">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="f2" green="f2" red="f2" type="rgb"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textusernameActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textEmailActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="textpassword">

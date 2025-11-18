@@ -4,20 +4,20 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
-public class BrowseCoursesFrame extends javax.swing.JFrame {
+public class EditCourseFrame extends javax.swing.JFrame {
 
-    private StudentManagement student;
+    private Instructor instructor;
     private UserDatabase userDatabase;
     private CourseDatabase courseDatabase;
 
-    public BrowseCoursesFrame(StudentManagement student, UserDatabase userDatabase, CourseDatabase courseDatabase) {
-        this.student = student;
+    public EditCourseFrame(Instructor instructor, UserDatabase userDatabase, CourseDatabase courseDatabase) {
+        this.instructor = instructor;
         this.userDatabase = userDatabase;
         this.courseDatabase = courseDatabase;
         initComponents();
         setLocationRelativeTo(null);
-        setTitle("Browse Courses - " + student.getUsername());
-        loadCourses();
+        setTitle("Edit Course");
+        loadInstructorCourses();
     }
 
     @SuppressWarnings("unchecked")
@@ -25,7 +25,7 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         coursesTable = new javax.swing.JTable();
-        enrollBtn = new javax.swing.JButton();
+        editBtn = new javax.swing.JButton();
         backBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -34,11 +34,11 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
         coursesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "Course ID", "Title", "Description", "Instructor"
+                "Course ID", "Title", "Description", "Students"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -54,11 +54,11 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(coursesTable);
 
-        enrollBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        enrollBtn.setText("Enroll in Selected Course");
-        enrollBtn.addActionListener(new java.awt.event.ActionListener() {
+        editBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        editBtn.setText("Edit Selected Course");
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enrollBtnActionPerformed(evt);
+                editBtnActionPerformed(evt);
             }
         });
 
@@ -71,7 +71,7 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18));
-        jLabel1.setText("Available Courses");
+        jLabel1.setText("My Courses");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,7 +84,7 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(backBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(enrollBtn))
+                        .addComponent(editBtn))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -99,7 +99,7 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enrollBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -107,32 +107,25 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
         pack();
     }
 
-    private void loadCourses() {
+    private void loadInstructorCourses() {
         DefaultTableModel model = (DefaultTableModel) coursesTable.getModel();
         model.setRowCount(0);
         
-        ArrayList<CourseManagement> allCourses = courseDatabase.getAllCourses();
-        for (CourseManagement course : allCourses) {
-            if (!student.isEnrolledInCourse(course.getCourseId())) {
-                String instructorName = "Unknown";
-                Instructor instructor = userDatabase.findInstructorById(course.getInstructorId());
-                if (instructor != null) {
-                    instructorName = instructor.getUsername();
-                }
-                model.addRow(new Object[]{
-                    course.getCourseId(),
-                    course.getTitle(),
-                    course.getDescription(),
-                    instructorName
-                });
-            }
+        ArrayList<CourseManagement> instructorCourses = courseDatabase.getCoursesByInstructor(instructor.getUserId());
+        for (CourseManagement course : instructorCourses) {
+            model.addRow(new Object[]{
+                course.getCourseId(),
+                course.getTitle(),
+                course.getDescription(),
+                course.getStudentCount()
+            });
         }
     }
 
-    private void enrollBtnActionPerformed(java.awt.event.ActionEvent evt) {
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {
         int selectedRow = coursesTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a course to enroll in.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please select a course to edit.", "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
@@ -140,26 +133,22 @@ public class BrowseCoursesFrame extends javax.swing.JFrame {
         CourseManagement course = courseDatabase.findCourseById(courseId);
         
         if (course != null) {
-            student.enrollCourse(courseId);
-            course.enrollStudent(student.getUserId());
-            userDatabase.editStudent(student.getUserId(), student);
-            courseDatabase.editCourse(courseId, course);
-            
-            JOptionPane.showMessageDialog(this, "Successfully enrolled in: " + course.getTitle(), "Enrollment Successful", JOptionPane.INFORMATION_MESSAGE);
-            loadCourses();
+            this.dispose();
+            EditCourseDetailsFrame editDetailsFrame = new EditCourseDetailsFrame(instructor, userDatabase, courseDatabase, course);
+            editDetailsFrame.setVisible(true);
         }
     }
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        StudentDashboard dashboard = new StudentDashboard(student, userDatabase);
+        InstructorDashboard dashboard = new InstructorDashboard(instructor, userDatabase, courseDatabase);
         dashboard.setVisible(true);
     }
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton backBtn;
     private javax.swing.JTable coursesTable;
-    private javax.swing.JButton enrollBtn;
+    private javax.swing.JButton editBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration                   

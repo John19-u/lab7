@@ -1,51 +1,76 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package lab7;
 
 import java.security.NoSuchAlgorithmException;
-import static lab7.SHA256Hasher.checkPassword;
-import static lab7.SHA256Hasher.hashPassword;
 
-/**
- *
- * @author PXC
- */
 public class Usermanagement {
-    private UserDatabase userdatabase;
-   
-   
-    public boolean login(String userId,String password,String status) throws NoSuchAlgorithmException{
-    if (status == "Student") {
-            StudentManagement s = (userdatabase.findStudentById(userId));
-            if (s != null && checkPassword(password,s.getPassword())) {
-               return true;
-            } else {
-               return false;
-            }
-        } else if (status == "Instructor") {
-            Instructor ins = userdatabase.findInstructorManagementById(userId);
-            if (ins != null && checkPassword(password,ins.getPasswordHash())) {
-                return true;
-            } else {
+    private UserDatabase userDatabase; // Fixed naming convention
+    
+    public Usermanagement(UserDatabase userDatabase) {
+        this.userDatabase = userDatabase;
+    }
+    
+    public StudentManagement loginStudent(String email, String password) throws NoSuchAlgorithmException {
+        String passwordHash = SHA256Hasher.hashPassword(password);
+        return userDatabase.authenticateStudent(email, passwordHash);
+    }
+    
+    public Instructor loginInstructor(String email, String password) throws NoSuchAlgorithmException {
+        String passwordHash = SHA256Hasher.hashPassword(password);
+        return userDatabase.authenticateInstructor(email, passwordHash);
+    }
+    
+    public boolean signupStudent(String userId, String username, String email, String password) {
+        try {
+            // Check if user already exists
+            if (userDatabase.findStudentById(userId) != null || userDatabase.findStudentByEmail(email) != null) {
                 return false;
             }
+            
+            String passwordHash = SHA256Hasher.hashPassword(password);
+            StudentManagement student = new StudentManagement(username, "Student", passwordHash, userId, email);
+            userDatabase.addStudent(student);
+            return true;
+            
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Error during signup: " + ex.getMessage());
+            return false;
         }
-    return true;
     }
-    public void signup(String userid,String userrole,String useremail,String userpassword,String username){
-     try{
-        userpassword= hashPassword(userpassword);
-        if(userrole=="Student"){
-        userdatabase.addStudent(new StudentManagement(userid,userrole,username,useremail,userpassword));
+    
+    public boolean signupInstructor(String userId, String username, String email, String password) {
+        try {
+            // Check if user already exists
+            if (userDatabase.findInstructorById(userId) != null || userDatabase.findInstructorByEmail(email) != null) {
+                return false;
+            }
+            
+            String passwordHash = SHA256Hasher.hashPassword(password);
+            Instructor instructor = new Instructor(userId, "Instructor", username, email, passwordHash);
+            userDatabase.addInstructor(instructor);
+            return true;
+            
+        } catch (NoSuchAlgorithmException ex) {
+            System.out.println("Error during signup: " + ex.getMessage());
+            return false;
         }
-        else{
-        userdatabase.addInstructorManagement(new Instructor(userid,userrole,username,useremail,userpassword));
+    }
+    
+    // Combined login method that detects role automatically
+    public Object login(String email, String password) throws NoSuchAlgorithmException {
+        String passwordHash = SHA256Hasher.hashPassword(password);
+        
+        // Try student first
+        StudentManagement student = userDatabase.authenticateStudent(email, passwordHash);
+        if (student != null) {
+            return student;
         }
-     }
-     catch(NoSuchAlgorithmException ex){
-         System.out.println(ex);
-     }
+        
+        // Try instructor
+        Instructor instructor = userDatabase.authenticateInstructor(email, passwordHash);
+        if (instructor != null) {
+            return instructor;
+        }
+        
+        return null; // Authentication failed
     }
 }

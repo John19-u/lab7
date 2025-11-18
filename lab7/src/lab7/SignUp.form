@@ -22,12 +22,12 @@
                   <Group type="102" attributes="0">
                       <Component id="jLabel1" min="-2" pref="111" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="usernamebutton" max="32767" attributes="0"/>
+                      <Component id="usernameField" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel2" min="-2" pref="111" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="useremailbutton" max="32767" attributes="0"/>
+                      <Component id="useremailField" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jLabel3" min="-2" pref="111" max="-2" attributes="0"/>
@@ -37,13 +37,13 @@
                               <Component id="userstatus" min="-2" pref="137" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jPasswordField1" max="32767" attributes="0"/>
+                          <Component id="passwordField" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel4" min="-2" pref="111" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                      <Component id="useridbutton" pref="239" max="32767" attributes="0"/>
+                      <Component id="useridField" pref="239" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -66,23 +66,23 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel1" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                          <Component id="usernamebutton" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
+                          <Component id="usernameField" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" pref="37" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="useridbutton" min="-2" pref="46" max="-2" attributes="0"/>
+                  <Component id="useridField" min="-2" pref="46" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                  <Component id="useremailbutton" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
+                  <Component id="useremailField" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jLabel3" min="-2" pref="37" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="jPasswordField1" max="32767" attributes="0"/>
+                      <Component id="passwordField" max="32767" attributes="0"/>
                       <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -138,34 +138,34 @@
         <Property name="text" type="java.lang.String" value="Userid"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="useridbutton">
+    <Component class="javax.swing.JTextField" name="useridField">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="f2" green="f2" red="f2" type="rgb"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useridbuttonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useridFieldActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="usernamebutton">
+    <Component class="javax.swing.JTextField" name="usernameField">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="f2" green="f2" red="f2" type="rgb"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usernamebuttonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usernameFieldActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="useremailbutton">
+    <Component class="javax.swing.JTextField" name="useremailField">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="f2" green="f2" red="f2" type="rgb"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useremailbuttonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useremailFieldActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="signup">
@@ -198,9 +198,9 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="jPasswordField1">
+    <Component class="javax.swing.JPasswordField" name="passwordField">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jPasswordField1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passwordFieldActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

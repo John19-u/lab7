@@ -1,0 +1,21 @@
+{
+  "coursesList": [
+    {
+      "courseId": "1111",
+      "title": "javaa",
+      "description": "mastering java",
+      "instructorId": "9551",
+      "lessons": [
+        {
+          "lessonId": "1112",
+          "title": "methods",
+          "content": "mastering lessonsss",
+          "resources": []
+        }
+      ],
+      "students": [
+        "9451"
+      ]
+    }
+  ]
+}

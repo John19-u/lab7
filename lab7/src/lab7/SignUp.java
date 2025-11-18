@@ -14,21 +14,17 @@ import javax.swing.SwingUtilities;
  */
 public class SignUp extends javax.swing.JPanel {
 
-    private String userid;
-    private String username;
-    private String password;
-    private String userrole;
-    private String useremail;
-    private javax.swing.JFrame mainFrame;
-    private Usermanagement usermanagement;
-    private UserDatabase userdatabase;
+    private UserDatabase userDatabase;
+    private Usermanagement userManagement;
 
     /**
      * Creates new form SignUp
      */
-    public SignUp(javax.swing.JFrame frame) {
-        this.mainFrame = frame;
+    public SignUp(JFrame parentFrame) {
+        this.userDatabase = new UserDatabase("users.json");
+        this.userManagement = new Usermanagement(userDatabase);
         initComponents();
+      
     }
 
     /**
@@ -45,12 +41,12 @@ public class SignUp extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        useridbutton = new javax.swing.JTextField();
-        usernamebutton = new javax.swing.JTextField();
-        useremailbutton = new javax.swing.JTextField();
+        useridField = new javax.swing.JTextField();
+        usernameField = new javax.swing.JTextField();
+        useremailField = new javax.swing.JTextField();
         signup = new javax.swing.JButton();
         userstatus = new javax.swing.JComboBox<>();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        passwordField = new javax.swing.JPasswordField();
 
         back.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         back.setText("Back");
@@ -72,24 +68,24 @@ public class SignUp extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Userid");
 
-        useridbutton.setBackground(new java.awt.Color(242, 242, 242));
-        useridbutton.addActionListener(new java.awt.event.ActionListener() {
+        useridField.setBackground(new java.awt.Color(242, 242, 242));
+        useridField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useridbuttonActionPerformed(evt);
+                useridFieldActionPerformed(evt);
             }
         });
 
-        usernamebutton.setBackground(new java.awt.Color(242, 242, 242));
-        usernamebutton.addActionListener(new java.awt.event.ActionListener() {
+        usernameField.setBackground(new java.awt.Color(242, 242, 242));
+        usernameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usernamebuttonActionPerformed(evt);
+                usernameFieldActionPerformed(evt);
             }
         });
 
-        useremailbutton.setBackground(new java.awt.Color(242, 242, 242));
-        useremailbutton.addActionListener(new java.awt.event.ActionListener() {
+        useremailField.setBackground(new java.awt.Color(242, 242, 242));
+        useremailField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                useremailbuttonActionPerformed(evt);
+                useremailFieldActionPerformed(evt);
             }
         });
 
@@ -109,9 +105,9 @@ public class SignUp extends javax.swing.JPanel {
             }
         });
 
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
+                passwordFieldActionPerformed(evt);
             }
         });
 
@@ -125,11 +121,11 @@ public class SignUp extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)
-                        .addComponent(usernamebutton))
+                        .addComponent(usernameField))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)
-                        .addComponent(useremailbutton))
+                        .addComponent(useremailField))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)
@@ -137,11 +133,11 @@ public class SignUp extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(userstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jPasswordField1)))
+                            .addComponent(passwordField)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)
-                        .addComponent(useridbutton, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)))
+                        .addComponent(useridField, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,87 +154,46 @@ public class SignUp extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(usernamebutton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(useridbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(useridField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(useremailbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(useremailField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPasswordField1)
+                        .addComponent(passwordField)
                         .addGap(7, 7, 7)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(signup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(userstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void useridbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useridbuttonActionPerformed
+    private void useridFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useridFieldActionPerformed
         // TODO add your handling code here:
-        String id = useridbutton.getText();
-        if (id.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Error:Write userid");
-        }
-        try {
-            Integer.parseInt(id);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error Invalid id");
-        }
-        //unique
-        if ((userdatabase.findInstructorManagementById(id) != null) || (userdatabase.findStudentById(id) != null)) {
-            JOptionPane.showMessageDialog(this, "Id must be unique");
-        } else {
-            userid = id;
-        }
-    }//GEN-LAST:event_useridbuttonActionPerformed
+    
+    }//GEN-LAST:event_useridFieldActionPerformed
 
-    private void usernamebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernamebuttonActionPerformed
+    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
         // TODO add your handling code here:
-        String userName = usernamebutton.getText().trim();
-        if (userName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Error:Write username");
-        } else if (!userName.matches("[a-zA-Z\\s]+")) {
-            JOptionPane.showMessageDialog(this, "username can only contain letters and spaces");
-        } else {
-            username = userName;
-        }
-    }//GEN-LAST:event_usernamebuttonActionPerformed
+   
+    }//GEN-LAST:event_usernameFieldActionPerformed
 
-    private void useremailbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useremailbuttonActionPerformed
+    private void useremailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useremailFieldActionPerformed
         // TODO add your handling code here:
-        String email = useremailbutton.getText().trim();
-
-        if (email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Email cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9+_-]+(\\.[A-Za-z0-9+_-]+)*@"
-                + "[^-][A-Za-z0-9+-]+(\\.[A-Za-z0-9+-]+)*(\\.[A-Za-z]{2,})$";
-
-        boolean isValid = email.matches(emailRegex);
-
-        if (!isValid) {
-            JOptionPane.showMessageDialog(this, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            useremail = email;
-        }
-    }//GEN-LAST:event_useremailbuttonActionPerformed
+  
+    }//GEN-LAST:event_useremailFieldActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         // TODO add your handling code here:
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (frame != null) {
-            // Close current frame
             frame.dispose();
-
-            // Create and show new login frame
             logIn loginFrame = new logIn();
             loginFrame.setVisible(true);
         }
@@ -246,35 +201,87 @@ public class SignUp extends javax.swing.JPanel {
 
     private void userstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userstatusActionPerformed
         // TODO add your handling code here:
-        String selected = userstatus.getSelectedItem().toString();
-        userrole = selected;
+  
     }//GEN-LAST:event_userstatusActionPerformed
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
         // TODO add your handling code here:
-        usermanagement.signup(userid, userrole, useremail, password, username);
-        JOptionPane.showMessageDialog(this, "user Added Successfully!");
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        if (frame != null) {
-            // Close current frame
-            frame.dispose();
+          String userId = useridField.getText().trim();
+        String username = usernameField.getText().trim();
+        String email = useremailField.getText().trim();
+        String password = new String(passwordField.getPassword());
+        String role = userstatus.getSelectedItem().toString();
 
-            // Create and show new login frame
-            logIn loginFrame = new logIn();
-            loginFrame.setVisible(true);
+        // Validation
+        if (userId.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate user ID (numeric)
+        try {
+            Integer.parseInt(userId);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "User ID must be numeric", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate username (letters and spaces only)
+        if (!username.matches("[a-zA-Z\\s]+")) {
+            JOptionPane.showMessageDialog(this, "Username can only contain letters and spaces", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate email
+        if (!SHA256Hasher.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate password strength
+        if (!SHA256Hasher.isPasswordStrong(password)) {
+            JOptionPane.showMessageDialog(this, "Password must be at least 6 characters long", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Check if user ID already exists
+        if (userDatabase.findStudentById(userId) != null || userDatabase.findInstructorById(userId) != null) {
+            JOptionPane.showMessageDialog(this, "User ID already exists", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Check if email already exists
+        if (userDatabase.findStudentByEmail(email) != null || userDatabase.findInstructorByEmail(email) != null) {
+            JOptionPane.showMessageDialog(this, "Email already registered", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Perform signup
+        boolean success = false;
+        if ("Student".equals(role)) {
+            success = userManagement.signupStudent(userId, username, email, password);
+        } else {
+            success = userManagement.signupInstructor(userId, username, email, password);
+        }
+
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Account created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            if (frame != null) {
+                frame.dispose();
+                logIn loginFrame = new logIn();
+                loginFrame.setVisible(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to create account. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_signupActionPerformed
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
-        String passwordd = new String(jPasswordField1.getPassword());
-        if (passwordd.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Enter password");
-        } else {
-            this.password = passwordd;
-        }
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
+  
+    }//GEN-LAST:event_passwordFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -283,11 +290,11 @@ public class SignUp extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JButton signup;
-    private javax.swing.JTextField useremailbutton;
-    private javax.swing.JTextField useridbutton;
-    private javax.swing.JTextField usernamebutton;
+    private javax.swing.JTextField useremailField;
+    private javax.swing.JTextField useridField;
+    private javax.swing.JTextField usernameField;
     private javax.swing.JComboBox<String> userstatus;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,19 +4,19 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
-public class ViewStudentsFrame extends javax.swing.JFrame {
+public class EditLessonFrame extends javax.swing.JFrame {
 
     private Instructor instructor;
     private UserDatabase userDatabase;
     private CourseDatabase courseDatabase;
 
-    public ViewStudentsFrame(Instructor instructor, UserDatabase userDatabase, CourseDatabase courseDatabase) {
+    public EditLessonFrame(Instructor instructor, UserDatabase userDatabase, CourseDatabase courseDatabase) {
         this.instructor = instructor;
         this.userDatabase = userDatabase;
         this.courseDatabase = courseDatabase;
         initComponents();
         setLocationRelativeTo(null);
-        setTitle("View Enrolled Students");
+        setTitle("Edit Lesson");
         loadInstructorCourses();
     }
 
@@ -28,15 +28,14 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
         courseComboBox = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        studentsTable = new javax.swing.JTable();
+        lessonsTable = new javax.swing.JTable();
+        editBtn = new javax.swing.JButton();
         backBtn = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        studentCountLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18));
-        jLabel1.setText("Enrolled Students");
+        jLabel1.setText("Edit Lesson");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel2.setText("Select Course:");
@@ -49,19 +48,19 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        jLabel3.setText("Enrolled Students:");
+        jLabel3.setText("Lessons:");
 
-        studentsTable.setModel(new javax.swing.table.DefaultTableModel(
+        lessonsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {
-                "Student ID", "Username", "Email", "Progress"
+                "Lesson ID", "Title", "Content Length"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -72,7 +71,15 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(studentsTable);
+        jScrollPane1.setViewportView(lessonsTable);
+
+        editBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        editBtn.setText("Edit Selected Lesson");
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editBtnActionPerformed(evt);
+            }
+        });
 
         backBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
         backBtn.setText("Back to Dashboard");
@@ -81,12 +88,6 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
                 backBtnActionPerformed(evt);
             }
         });
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        jLabel4.setText("Total Students:");
-
-        studentCountLabel.setFont(new java.awt.Font("Segoe UI", 1, 14));
-        studentCountLabel.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,13 +102,11 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(courseComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(studentCountLabel)
+                                .addComponent(backBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(backBtn)))
+                                .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(20, 20, 20))
         );
@@ -121,14 +120,13 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(courseComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(studentCountLabel)
-                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
                 .addComponent(jLabel3)
                 .addGap(5, 5, 5)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -144,50 +142,51 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
         }
     }
 
-    private void loadStudentsForCourse(String courseId) {
-        DefaultTableModel model = (DefaultTableModel) studentsTable.getModel();
+    private void loadLessonsForCourse(String courseId) {
+        DefaultTableModel model = (DefaultTableModel) lessonsTable.getModel();
         model.setRowCount(0);
         
         CourseManagement course = courseDatabase.findCourseById(courseId);
         if (course != null) {
-            int studentCount = 0;
-            for (String studentId : course.getStudents()) {
-                StudentManagement student = userDatabase.findStudentById(studentId);
-                if (student != null) {
-                    // Calculate progress
-                    int totalLessons = course.getLessons().size();
-                    int completedLessons = 0;
-                    for (Lesson lesson : course.getLessons()) {
-                        if (student.hasCompletedLesson(lesson.getLessonId())) {
-                            completedLessons++;
-                        }
-                    }
-                    
-                    String progress;
-                    if (totalLessons > 0) {
-                        int percentage = (completedLessons * 100) / totalLessons;
-                        progress = completedLessons + "/" + totalLessons + " (" + percentage + "%)";
-                    } else {
-                        progress = "No lessons";
-                    }
-                    
-                    model.addRow(new Object[]{
-                        student.getUserId(),
-                        student.getUsername(),
-                        student.getEmail(),
-                        progress
-                    });
-                    studentCount++;
-                }
+            for (Lesson lesson : course.getLessons()) {
+                model.addRow(new Object[]{
+                    lesson.getLessonId(),
+                    lesson.getTitle(),
+                    lesson.getContent().length()
+                });
             }
-            studentCountLabel.setText(String.valueOf(studentCount));
         }
     }
 
     private void courseComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         if (courseComboBox.getSelectedItem() != null) {
             String courseId = ((CourseComboItem) courseComboBox.getSelectedItem()).getId();
-            loadStudentsForCourse(courseId);
+            loadLessonsForCourse(courseId);
+        }
+    }
+
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        if (courseComboBox.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Please select a course.", "No Course Selected", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int selectedRow = lessonsTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a lesson to edit.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        String courseId = ((CourseComboItem) courseComboBox.getSelectedItem()).getId();
+        String lessonId = (String) lessonsTable.getValueAt(selectedRow, 0);
+        
+        CourseManagement course = courseDatabase.findCourseById(courseId);
+        Lesson lesson = course.getLessonById(lessonId);
+        
+        if (lesson != null) {
+            this.dispose();
+            EditLessonDetailsFrame editDetailsFrame = new EditLessonDetailsFrame(instructor, userDatabase, courseDatabase, course, lesson);
+            editDetailsFrame.setVisible(true);
         }
     }
 
@@ -216,14 +215,13 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JButton backBtn;
     private javax.swing.JComboBox<CourseComboItem> courseComboBox;
+    private javax.swing.JButton editBtn;
+    private javax.swing.JButton backBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel studentCountLabel;
-    private javax.swing.JTable studentsTable;
+    private javax.swing.JTable lessonsTable;
     // End of variables declaration                   
 }

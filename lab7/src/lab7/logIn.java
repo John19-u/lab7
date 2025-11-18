@@ -3,19 +3,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package lab7;
-
+import lab7.CourseDatabase;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class logIn extends javax.swing.JFrame {
 
-    private String status;
-    private Usermanagement usermanagement;
+    private UserDatabase userDatabase;
+    private Usermanagement userManagement;
+
 
     public logIn() {
+         this.userDatabase = new UserDatabase("users.json");
+        this.userManagement = new Usermanagement(userDatabase);
         initComponents();
+        setLocationRelativeTo(null); 
     }
 
     /**
@@ -31,7 +36,7 @@ public class logIn extends javax.swing.JFrame {
         jTextPane1 = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        textusername = new javax.swing.JTextField();
+        textEmail = new javax.swing.JTextField();
         textpassword = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         userstatus = new javax.swing.JComboBox<>();
@@ -43,16 +48,16 @@ public class logIn extends javax.swing.JFrame {
 
         jLabel1.setBackground(new java.awt.Color(204, 255, 204));
         jLabel1.setFont(new java.awt.Font("Sitka Text", 1, 36)); // NOI18N
-        jLabel1.setText("User Name:");
+        jLabel1.setText("E-mail");
 
         jLabel2.setBackground(new java.awt.Color(204, 255, 204));
         jLabel2.setFont(new java.awt.Font("Sitka Text", 1, 36)); // NOI18N
         jLabel2.setText("Password:");
 
-        textusername.setBackground(new java.awt.Color(242, 242, 242));
-        textusername.addActionListener(new java.awt.event.ActionListener() {
+        textEmail.setBackground(new java.awt.Color(242, 242, 242));
+        textEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textusernameActionPerformed(evt);
+                textEmailActionPerformed(evt);
             }
         });
 
@@ -104,7 +109,7 @@ public class logIn extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(textusername)
+                    .addComponent(textEmail)
                     .addComponent(textpassword, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -118,7 +123,7 @@ public class logIn extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(textusername, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -134,57 +139,85 @@ public class logIn extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textusernameActionPerformed
+    private void textEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textusernameActionPerformed
+    }//GEN-LAST:event_textEmailActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String username = textusername.getText();
+               String email = textEmail.getText().trim();
         String password = new String(textpassword.getPassword());
-        boolean enter = false;
+        String role = userstatus.getSelectedItem().toString();
+
+        // Validation
+        if (email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!SHA256Hasher.isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
-            enter = usermanagement.login(username, password, status);
+            Object user = userManagement.login(email, password);
+            
+            if (user != null) {
+                // Successful login
+                if (user instanceof StudentManagement) {
+                    StudentManagement student = (StudentManagement) user;
+                    if ("Student".equals(role)) {
+                        openStudentDashboard(student);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "User is a student but you selected instructor role", "Role Mismatch", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else if (user instanceof Instructor) {
+                    Instructor instructor = (Instructor) user;
+                    if ("Instructor".equals(role)) {
+                        openInstructorDashboard(instructor);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "User is an instructor but you selected student role", "Role Mismatch", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid email or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                textpassword.setText("");
+            }
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(logIn.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "System error during login", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        if (enter && status == "Student") {
-            this.getContentPane().removeAll();
-
-            StudentDashboard homepagePanel = new StudentDashboard(this);//to be edited
-            this.setContentPane(homepagePanel);//to be edited
-
-            this.revalidate();
-            this.repaint();
-        } else if (enter && status == "Instructor") {
-            this.getContentPane().removeAll();
-            InstructorDashboard homepagePanel = new InstructorDashboard(this);//to be edited
-            this.setContentPane(homepagePanel);// to be edited
-            this.revalidate();
-            this.repaint();
-        } else {
-            JOptionPane.showMessageDialog(this, "Incorect password or username");
-            textusername.setText("");
-            textpassword.setText("");
-        }
-
+    
     }//GEN-LAST:event_jButton1ActionPerformed
+    private void openStudentDashboard(StudentManagement student) {
+        this.dispose();
+        StudentDashboard studentDashboard = new StudentDashboard(student, userDatabase);
+        studentDashboard.setVisible(true);
+    }
 
+    private void openInstructorDashboard(Instructor instructor) {
+        this.dispose();
+        CourseDatabase courseDatabase = new CourseDatabase("courses.json");
+        InstructorDashboard instructorDashboard = new InstructorDashboard(instructor, userDatabase, courseDatabase);
+        instructorDashboard.setVisible(true);
+    }
     private void userstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userstatusActionPerformed
         // TODO add your handling code here:
-        String selected = userstatus.getSelectedItem().toString();
-        status = selected;
+       
     }//GEN-LAST:event_userstatusActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        this.getContentPane().removeAll();
-
-        SignUp signupPanel = new SignUp(this);
-        this.setContentPane(signupPanel);
-
-        this.revalidate();
-        this.repaint();
+        this.dispose();
+    
+    // Create a new frame for the signup panel
+    JFrame signupFrame = new JFrame("Skill Forge - Sign Up");
+    signupFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    signupFrame.add(new SignUp(signupFrame));
+    signupFrame.pack();
+    signupFrame.setLocationRelativeTo(null);
+    signupFrame.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void textpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textpasswordActionPerformed
@@ -195,33 +228,17 @@ public class logIn extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
+         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(logIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(logIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(logIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(logIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new logIn().setVisible(true);
@@ -236,8 +253,8 @@ public class logIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextField textEmail;
     private javax.swing.JPasswordField textpassword;
-    private javax.swing.JTextField textusername;
     private javax.swing.JComboBox<String> userstatus;
     // End of variables declaration//GEN-END:variables
 }
