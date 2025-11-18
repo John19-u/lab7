@@ -3,6 +3,7 @@ package lab7;
 import java.util.ArrayList;
 
 public class Instructor {
+
     private String userId; // Fixed naming convention
     private String role;
     private String username;
@@ -20,8 +21,8 @@ public class Instructor {
         this.createdCourses = new ArrayList<>();
     }
 
-    public Instructor(String userId, String role, String username, String email, String passwordHash, 
-                     ArrayList<CourseManagement> createdCourses) {
+    public Instructor(String userId, String role, String username, String email, String passwordHash,
+            ArrayList<CourseManagement> createdCourses) {
         this.userId = userId;
         this.role = role;
         this.username = username;
@@ -31,26 +32,51 @@ public class Instructor {
     }
 
     // Getters and Setters
-    public String getUserId() { return userId; } // Fixed method name
-    public void setUserId(String userId) { this.userId = userId; }
+    public String getUserId() {
+        return userId;
+    } // Fixed method name
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
-
-    public ArrayList<CourseManagement> getCreatedCourses() { 
-        return new ArrayList<>(createdCourses); 
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
-    
-    public void setCreatedCourses(ArrayList<CourseManagement> createdCourses) { 
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public ArrayList<CourseManagement> getCreatedCourses() {
+        return new ArrayList<>(createdCourses);
+    }
+
+    public void setCreatedCourses(ArrayList<CourseManagement> createdCourses) {
         this.createdCourses = createdCourses != null ? createdCourses : new ArrayList<>();
     }
 
