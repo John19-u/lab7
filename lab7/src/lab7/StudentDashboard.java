@@ -129,17 +129,7 @@ public class StudentDashboard extends javax.swing.JFrame {
         logIn loginFrame = new logIn();
         loginFrame.setVisible(true);
     }
-
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                // For testing only
-                UserDatabase userDb = new UserDatabase("users.json");
-                StudentManagement testStudent = new StudentManagement("Test", "Student", "hash", "123", "test@test.com");
-                new StudentDashboard(testStudent, userDb).setVisible(true);
-            }
-        });
-    }
+ 
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton enrollCoursesBtn;

@@ -7,11 +7,25 @@
       "userId": "9451",
       "email": "mahmoud@gmail.com",
       "enrolledCourses": [
-        "1111"
+        "1111",
+        "11"
       ],
       "progress": [
-        "1112"
+        "1112",
+        "2",
+        "3"
       ]
+    },
+    {
+      "username": "b",
+      "role": "Student",
+      "passwordHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+      "userId": "00",
+      "email": "b@gmail.com",
+      "enrolledCourses": [
+        "11"
+      ],
+      "progress": []
     }
   ],
   "instructorsList": [
@@ -21,6 +35,14 @@
       "username": "abdo",
       "email": "abdo@gmail.com",
       "passwordHash": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414",
+      "createdCourses": []
+    },
+    {
+      "userId": "222",
+      "role": "Instructor",
+      "username": "a",
+      "email": "a@gmail.com",
+      "passwordHash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
       "createdCourses": []
     }
   ]

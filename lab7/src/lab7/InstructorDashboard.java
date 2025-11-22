@@ -30,6 +30,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
         viewStudentsBtn = new javax.swing.JButton();
         logoutBtn = new javax.swing.JButton();
         welcomeLabel = new javax.swing.JLabel();
+        insightsBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,6 +104,14 @@ public class InstructorDashboard extends javax.swing.JFrame {
         welcomeLabel.setFont(new java.awt.Font("Segoe UI", 1, 16));
         welcomeLabel.setText("Welcome, " + instructor.getUsername() + "!");
 
+        insightsBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        insightsBtn.setText("View Insights");
+        insightsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insightsBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,6 +126,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
                             .addComponent(createCourseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(editCourseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(deleteCourseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(insightsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -147,8 +157,10 @@ public class InstructorDashboard extends javax.swing.JFrame {
                     .addComponent(deleteLessonBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(insightsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(viewStudentsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
 
@@ -203,17 +215,12 @@ public class InstructorDashboard extends javax.swing.JFrame {
         loginFrame.setVisible(true);
     }
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                // For testing only
-                UserDatabase userDb = new UserDatabase("users.json");
-                CourseDatabase courseDb = new CourseDatabase("courses.json");
-                Instructor testInstructor = new Instructor("456", "Instructor", "Test Instructor", "instructor@test.com", "hash");
-                new InstructorDashboard(testInstructor, userDb, courseDb).setVisible(true);
-            }
-        });
+    private void insightsBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        InstructorInsightsFrame insightsFrame = new InstructorInsightsFrame(instructor, userDatabase, courseDatabase);
+        insightsFrame.setVisible(true);
     }
+
+    
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton addLessonBtn;
@@ -222,6 +229,7 @@ public class InstructorDashboard extends javax.swing.JFrame {
     private javax.swing.JButton deleteLessonBtn;
     private javax.swing.JButton editCourseBtn;
     private javax.swing.JButton editLessonBtn;
+    private javax.swing.JButton insightsBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton logoutBtn;
     private javax.swing.JButton viewStudentsBtn;
