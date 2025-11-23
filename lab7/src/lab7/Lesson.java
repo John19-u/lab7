@@ -8,6 +8,12 @@ public class Lesson {
     private String content;
     private ArrayList<String> resources;
     private Quiz quiz;
+
+    public Lesson(String lessonId, String title, String content) {
+        this.lessonId = lessonId;
+        this.title = title;
+        this.content = content;
+    }
     
     public Lesson(String lessonId, String title, String content, Quiz quiz) { 
         if (lessonId == null || lessonId.trim().isEmpty()) {
