@@ -138,7 +138,7 @@ public class CreateCourseFrame extends javax.swing.JFrame {
             CourseManagement newCourse = new CourseManagement(courseId, title, description, instructor.getUserId());
             instructor.createCourse(newCourse, courseDatabase);
             
-            JOptionPane.showMessageDialog(this, "Course created successfully: " + title, "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Course created successfully: " + title+":pending", "Success", JOptionPane.INFORMATION_MESSAGE);
             clearForm();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error creating course: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -157,7 +157,7 @@ public class CreateCourseFrame extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }
 
-    // Variables declaration - do not modify                     
+                        
     private javax.swing.JButton backBtn;
     private javax.swing.JButton createBtn;
     private javax.swing.JTextField courseIdField;

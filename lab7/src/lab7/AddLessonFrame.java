@@ -170,7 +170,7 @@ public class AddLessonFrame extends javax.swing.JFrame {
             return;
         }
 
-        // Check if lesson ID already exists in the course
+        
         if (course.getLessonById(lessonId) != null) {
             JOptionPane.showMessageDialog(this, "Lesson ID already exists in this course.", "Duplicate Lesson ID", JOptionPane.ERROR_MESSAGE);
             return;
@@ -199,7 +199,7 @@ public class AddLessonFrame extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }
 
-    // Helper class for combo box items
+   
     private class CourseComboItem {
         private String id;
         private String title;
@@ -217,7 +217,7 @@ public class AddLessonFrame extends javax.swing.JFrame {
         }
     }
 
-    // Variables declaration - do not modify                     
+                     
     private javax.swing.JButton addBtn;
     private javax.swing.JButton backBtn;
     private javax.swing.JComboBox<CourseComboItem> courseComboBox;

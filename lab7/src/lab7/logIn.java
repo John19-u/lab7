@@ -78,7 +78,7 @@ public class logIn extends javax.swing.JFrame {
         });
 
         userstatus.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        userstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Instructor" }));
+        userstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student", "Instructor", "Admin" }));
         userstatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userstatusActionPerformed(evt);
@@ -149,7 +149,7 @@ public class logIn extends javax.swing.JFrame {
         String password = new String(textpassword.getPassword());
         String role = userstatus.getSelectedItem().toString();
 
-        // Validation
+       
         if (email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -164,21 +164,30 @@ public class logIn extends javax.swing.JFrame {
             Object user = userManagement.login(email, password);
             
             if (user != null) {
-                // Successful login
+                
                 if (user instanceof StudentManagement) {
                     StudentManagement student = (StudentManagement) user;
                     if ("Student".equals(role)) {
                         openStudentDashboard(student);
                     } else {
-                        JOptionPane.showMessageDialog(this, "User is a student but you selected instructor role", "Role Mismatch", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "User is a student", "Role Mismatch", JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (user instanceof Instructor) {
                     Instructor instructor = (Instructor) user;
                     if ("Instructor".equals(role)) {
                         openInstructorDashboard(instructor);
                     } else {
-                        JOptionPane.showMessageDialog(this, "User is an instructor but you selected student role", "Role Mismatch", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "User is an instructor", "Role Mismatch", JOptionPane.WARNING_MESSAGE);
                     }
+                }else if(user instanceof Admin){
+                    
+                    Admin admin = (Admin) user;
+                    if ("Admin".equals(role)) {
+                        openAdminDashboard(admin);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "User is an admin", "Role Mismatch", JOptionPane.WARNING_MESSAGE);
+                    }
+                    
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid email or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
@@ -202,6 +211,12 @@ public class logIn extends javax.swing.JFrame {
         InstructorDashboard instructorDashboard = new InstructorDashboard(instructor, userDatabase, courseDatabase);
         instructorDashboard.setVisible(true);
     }
+      private void openAdminDashboard(Admin admin) {
+        this.dispose();
+        CourseDatabase courseDatabase = new CourseDatabase("courses.json");
+        AdminDashboard adminDashboard = new AdminDashboard(admin, userDatabase, courseDatabase);
+        adminDashboard.setVisible(true);
+    }
     private void userstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userstatusActionPerformed
         // TODO add your handling code here:
        
@@ -211,7 +226,7 @@ public class logIn extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     
-    // Create a new frame for the signup panel
+  
     JFrame signupFrame = new JFrame("Skill Forge - Sign Up");
     signupFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     signupFrame.add(new SignUp(signupFrame));

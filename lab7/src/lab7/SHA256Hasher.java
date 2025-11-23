@@ -7,7 +7,7 @@ import java.util.Base64;
 
 public class SHA256Hasher {
     
-    // Hash password with SHA-256
+   
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
         if (password == null) {
             throw new IllegalArgumentException("Password cannot be null");
@@ -18,7 +18,7 @@ public class SHA256Hasher {
         return bytesToHex(hashedBytes);
     }
     
-    // Convert byte array to hexadecimal string
+ 
     private static String bytesToHex(byte[] bytes) {
         if (bytes == null) return "";
         
@@ -29,7 +29,7 @@ public class SHA256Hasher {
         return sb.toString();
     }
     
-    // Check if password matches the hash
+   
     public static boolean checkPassword(String password, String hashedPassword) throws NoSuchAlgorithmException {
         if (password == null || hashedPassword == null) {
             return false;
@@ -39,7 +39,7 @@ public class SHA256Hasher {
         return newHash.equals(hashedPassword);
     }
     
-    // Utility method to validate email format
+    
     public static boolean isValidEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
             return false;
@@ -48,12 +48,12 @@ public class SHA256Hasher {
         return email.matches(emailRegex);
     }
     
-    // Utility method to validate password strength
+    
     public static boolean isPasswordStrong(String password) {
         if (password == null || password.length() < 6) {
             return false;
         }
-        // Basic strength check - at least 6 characters
+       
         return password.length() >= 6;
     }
 }

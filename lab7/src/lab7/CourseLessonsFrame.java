@@ -186,7 +186,7 @@ public class CourseLessonsFrame extends javax.swing.JFrame {
         coursesFrame.setVisible(true);
     }
 
-    // Variables declaration - do not modify                     
+                       
     private javax.swing.JButton backBtn;
     private javax.swing.JLabel courseTitleLabel;
     private javax.swing.JLabel jLabel1;

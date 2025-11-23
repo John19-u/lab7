@@ -163,7 +163,7 @@ public class EnrolledCoursesFrame extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }
 
-    // Variables declaration - do not modify                     
+                     
     private javax.swing.JButton backBtn;
     private javax.swing.JTable enrolledTable;
     private javax.swing.JLabel jLabel1;

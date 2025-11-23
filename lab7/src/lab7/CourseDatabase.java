@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class CourseDatabase {
+
     private ArrayList<CourseManagement> coursesList;
     private final File file;
     private final Gson gson;
@@ -20,7 +21,7 @@ public class CourseDatabase {
     private void load() {
         try {
             if (!file.exists()) {
-                save(); 
+                save();
                 return;
             }
 
@@ -50,8 +51,9 @@ public class CourseDatabase {
     }
 
     public void addCourse(CourseManagement c) {
-        if (findCourseById(c.getCourseId()) != null)
+        if (findCourseById(c.getCourseId()) != null) {
             throw new IllegalArgumentException("Course ID already exists!");
+        }
         coursesList.add(c);
         save();
     }
@@ -80,8 +82,9 @@ public class CourseDatabase {
 
     public CourseManagement findCourseById(String courseId) {
         for (CourseManagement c : coursesList) {
-            if (c.getCourseId().equals(courseId))
+            if (c.getCourseId().equals(courseId)) {
                 return c;
+            }
         }
         return null;
     }
@@ -90,10 +93,61 @@ public class CourseDatabase {
         return new ArrayList<>(coursesList);
     }
 
+    
+    public ArrayList<CourseManagement> getAllApprovedCourses() {
+        ArrayList<CourseManagement> approvedList = new ArrayList<>();
+        for (CourseManagement c : coursesList) {
+            if (c.isApproved()) {
+                approvedList.add(c);
+            }
+        }
+        return approvedList;
+    }
+
+    public ArrayList<CourseManagement> getPendingCourses() {
+        ArrayList<CourseManagement> pendingList = new ArrayList<>();
+        for (CourseManagement c : coursesList) {
+            if (c.isPending()) {
+                pendingList.add(c);
+            }
+        }
+        return pendingList;
+    }
+
+    public ArrayList<CourseManagement> getRejectedCourses() {
+        ArrayList<CourseManagement> rejectedList = new ArrayList<>();
+        for (CourseManagement c : coursesList) {
+            if (c.isRejected()) {
+                rejectedList.add(c);
+            }
+        }
+        return rejectedList;
+    }
+
+    public ArrayList<CourseManagement> getCoursesByStatus(String status) {
+        ArrayList<CourseManagement> result = new ArrayList<>();
+        for (CourseManagement c : coursesList) {
+            if (c.getStatus().equals(status)) {
+                result.add(c);
+            }
+        }
+        return result;
+    }
+
     public ArrayList<CourseManagement> getCoursesByInstructor(String instructorId) {
         ArrayList<CourseManagement> result = new ArrayList<>();
         for (CourseManagement course : coursesList) {
             if (course.getInstructorId().equals(instructorId)) {
+                result.add(course);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<CourseManagement> getApprovedCoursesByInstructor(String instructorId) {
+        ArrayList<CourseManagement> result = new ArrayList<>();
+        for (CourseManagement course : coursesList) {
+            if (course.getInstructorId().equals(instructorId) && course.isApproved()) {
                 result.add(course);
             }
         }

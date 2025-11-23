@@ -6,8 +6,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class UserDatabase {
+
     private ArrayList<StudentManagement> studentsList;
     private ArrayList<Instructor> instructorsList;
+    private ArrayList<Admin> adminsList;
     private final File file;
     private final Gson gson;
 
@@ -16,6 +18,7 @@ public class UserDatabase {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.studentsList = new ArrayList<>();
         this.instructorsList = new ArrayList<>();
+        this.adminsList = new ArrayList<>();
         load();
     }
 
@@ -36,6 +39,9 @@ public class UserDatabase {
                 if (wrapper.instructorsList != null) {
                     instructorsList = wrapper.instructorsList;
                 }
+                if (wrapper.adminsList != null) {
+                    adminsList = wrapper.adminsList;
+                }
             }
         } catch (Exception e) {
             System.out.println("Error loading DB: " + e.getMessage());
@@ -47,7 +53,7 @@ public class UserDatabase {
             DatabaseWrapper wrapper = new DatabaseWrapper();
             wrapper.studentsList = studentsList;
             wrapper.instructorsList = instructorsList;
-
+            wrapper.adminsList = adminsList;
             PrintWriter pw = new PrintWriter(new FileWriter(file));
             pw.print(gson.toJson(wrapper));
             pw.close();
@@ -56,7 +62,6 @@ public class UserDatabase {
         }
     }
 
-    // Student methods
     public void addStudent(StudentManagement s) {
         if (findStudentById(s.getUserId()) != null) {
             throw new IllegalArgumentException("Student ID already exists!");
@@ -109,7 +114,6 @@ public class UserDatabase {
         return false;
     }
 
-    // Instructor methods
     public void addInstructor(Instructor i) {
         if (findInstructorById(i.getUserId()) != null) {
             throw new IllegalArgumentException("Instructor ID already exists!");
@@ -162,7 +166,58 @@ public class UserDatabase {
         return false;
     }
 
-    // Authentication methods
+    public void addAdmin(Admin a) {
+        if (findStudentById(a.getUserId()) != null) {
+            throw new IllegalArgumentException("Student ID already exists!");
+        }
+        adminsList.add(a);
+        save();
+    }
+
+    public Admin findAdminById(String id) {
+        for (Admin a : adminsList) {
+            if (a.getUserId().equals(id)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    public Admin findAdminByEmail(String email) {
+        for (Admin a : adminsList) {
+            if (a.getEmail().equals(email)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Admin> getAllAdmins() {
+        return new ArrayList<>(adminsList);
+    }
+
+    public boolean deleteAdmin(String studentId) {
+        for (int i = 0; i < adminsList.size(); i++) {
+            if (adminsList.get(i).getUserId().equals(studentId)) {
+                adminsList.remove(i);
+                save();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean editAdmin(String AdminId, Admin updatedAdmin) {
+        for (int i = 0; i < adminsList.size(); i++) {
+            if (adminsList.get(i).getUserId().equals(AdminId)) {
+                adminsList.set(i, updatedAdmin);
+                save();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public StudentManagement authenticateStudent(String email, String passwordHash) {
         StudentManagement student = findStudentByEmail(email);
         if (student != null && student.getPasswordHash().equals(passwordHash)) {
@@ -179,8 +234,18 @@ public class UserDatabase {
         return null;
     }
 
+    public Admin authenticateAdmin(String email, String passwordHash) {
+        Admin admin = findAdminByEmail(email);
+        if (admin != null && admin.getPasswordHash().equals(passwordHash)) {
+            return admin;
+        }
+        return null;
+    }
+
     private static class DatabaseWrapper {
+
         ArrayList<StudentManagement> studentsList;
         ArrayList<Instructor> instructorsList;
+        ArrayList<Admin> adminsList;
     }
 }

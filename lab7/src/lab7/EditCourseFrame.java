@@ -145,7 +145,7 @@ public class EditCourseFrame extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }
 
-    // Variables declaration - do not modify                     
+                        
     private javax.swing.JButton backBtn;
     private javax.swing.JTable coursesTable;
     private javax.swing.JButton editBtn;

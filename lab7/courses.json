@@ -1,44 +1,54 @@
 {
   "coursesList": [
     {
-      "courseId": "1111",
-      "title": "javaa",
-      "description": "mastering java",
-      "instructorId": "9551",
+      "courseId": "2222",
+      "title": "cd;kfl",
+      "description": "jffffffffffff",
+      "instructorId": "2222",
+      "status": "APPROVED",
       "lessons": [
         {
-          "lessonId": "1112",
-          "title": "methods",
-          "content": "mastering lessonsss",
-          "resources": []
-        }
-      ],
-      "students": [
-        "9451"
-      ]
-    },
-    {
-      "courseId": "11",
-      "title": "math",
-      "description": "vvvvvvvvvvv",
-      "instructorId": "222",
-      "lessons": [
-        {
-          "lessonId": "2",
-          "title": "math 1",
-          "content": "111111111111",
+          "lessonId": "84444444444",
+          "title": "imlff",
+          "content": "fdlfmlf",
           "resources": []
         },
         {
-          "lessonId": "3",
-          "title": "math 2",
-          "content": "22222222222",
+          "lessonId": "7777",
+          "title": "hhhhhhhhhhhhh",
+          "content": "nnnnnnnnnnnn",
           "resources": []
         }
       ],
       "students": [
-        "9451",
-        "00"
+        "1111"
+      ]
+    },
+    {
+      "courseId": "88888",
+      "title": "jkkkkkkkkkkkk",
+      "description": "hhhhhhhhhhhhhh",
+      "instructorId": "2222",
+      "status": "REJECTED",
+      "lessons": [],
+      "students": []
+    },
+    {
+      "courseId": "7777",
+      "title": "jjjjjjjjj",
+      "description": "jjjjjjjjjjjjjjjjjjj",
+      "instructorId": "2222",
+      "status": "APPROVED",
+      "lessons": [
+        {
+          "lessonId": "9999",
+          "title": "fjlsjlf",
+          "content": "fjjjjjjjjjjjjjj",
+          "resources": []
+        }
+      ],
+      "students": [
+        "1111"
       ]
     }
   ]

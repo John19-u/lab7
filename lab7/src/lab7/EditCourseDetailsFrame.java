@@ -154,7 +154,7 @@ public class EditCourseDetailsFrame extends javax.swing.JFrame {
         editFrame.setVisible(true);
     }
 
-    // Variables declaration - do not modify                     
+                       
     private javax.swing.JButton backBtn;
     private javax.swing.JLabel courseIdLabel;
     private javax.swing.JTextField courseTitleField;

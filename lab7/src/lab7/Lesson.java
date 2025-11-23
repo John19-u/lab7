@@ -36,7 +36,7 @@ public class Lesson {
         this.resources = resources != null ? new ArrayList<>(resources) : new ArrayList<>();
     }
     
-    // Getters
+    
     public String getLessonId() {
         return lessonId;
     }
@@ -50,10 +50,9 @@ public class Lesson {
     }
 
     public ArrayList<String> getResources() {
-        return new ArrayList<>(resources); // Defensive copy
+        return new ArrayList<>(resources); 
     }
 
-    // Setters with validation
     public void setTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Lesson title cannot be null or empty");
@@ -65,7 +64,7 @@ public class Lesson {
         this.content = content != null ? content : "";
     }
     
-    // Resource management
+   
     public void addResource(String resource) {
         if (resource != null && !resource.trim().isEmpty()) {
             resources.add(resource);
@@ -94,7 +93,7 @@ public class Lesson {
                 '}';
     }
     
-    // Utility method for display
+   
     public String getDisplayInfo() {
         return title + " (ID: " + lessonId + ")";
     }

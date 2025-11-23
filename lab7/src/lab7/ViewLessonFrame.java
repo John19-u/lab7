@@ -119,7 +119,7 @@ public class ViewLessonFrame extends javax.swing.JFrame {
     private void loadLessonContent() {
         contentArea.setText(lesson.getContent());
         
-        // Load resources
+        
         if (lesson.hasResources()) {
             StringBuilder resourcesText = new StringBuilder();
             for (String resource : lesson.getResources()) {
@@ -130,7 +130,7 @@ public class ViewLessonFrame extends javax.swing.JFrame {
             resourcesLabel.setText("No resources available");
         }
         
-        // Update button text if already completed
+    
         if (student.hasCompletedLesson(lesson.getLessonId())) {
             markCompleteBtn.setText("Already Completed");
             markCompleteBtn.setEnabled(false);

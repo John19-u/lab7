@@ -200,7 +200,7 @@ public class DeleteLessonFrame extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }
 
-    // Helper class for combo box items
+    
     private class CourseComboItem {
         private String id;
         private String title;
@@ -218,7 +218,7 @@ public class DeleteLessonFrame extends javax.swing.JFrame {
         }
     }
 
-    // Variables declaration - do not modify                     
+                         
     private javax.swing.JComboBox<CourseComboItem> courseComboBox;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JButton backBtn;

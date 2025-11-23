@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class StudentManagement {
     private String username;
     private String role;
-    private String passwordHash; // Changed from password to passwordHash
-    private String userId; // Fixed naming convention
+    private String passwordHash; 
+    private String userId; 
     private String email;
-    private ArrayList<String> enrolledCourses; // Fixed naming and initialization
-    private ArrayList<String> progress; // Tracks completed lesson IDs
+    private ArrayList<String> enrolledCourses; 
+    private ArrayList<String> progress; 
 
     public StudentManagement(String username, String role, String passwordHash, String userId, String email) {
         this.username = username;
@@ -32,7 +32,7 @@ public class StudentManagement {
         this.progress = progress != null ? progress : new ArrayList<>();
     }
 
-    // Getters and Setters
+   
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
@@ -42,7 +42,7 @@ public class StudentManagement {
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
 
-    public String getUserId() { return userId; } // Fixed method name
+    public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 
     public String getEmail() { return email; }
@@ -64,7 +64,7 @@ public class StudentManagement {
         this.progress = progress != null ? progress : new ArrayList<>();
     }
 
-    // Business methods
+
     public void enrollCourse(String courseId) {
         if (courseId != null && !courseId.trim().isEmpty() && !enrolledCourses.contains(courseId)) {
             enrolledCourses.add(courseId);

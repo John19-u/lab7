@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 public class Instructor {
 
-    private String userId; // Fixed naming convention
+    private String userId; 
     private String role;
     private String username;
     private String email;
     private String passwordHash;
     private ArrayList<CourseManagement> createdCourses;
 
-    // Removed direct database dependency - better separation of concerns
+
     public Instructor(String userId, String role, String username, String email, String passwordHash) {
         this.userId = userId;
         this.role = role;
@@ -31,10 +31,10 @@ public class Instructor {
         this.createdCourses = createdCourses != null ? createdCourses : new ArrayList<>();
     }
 
-    // Getters and Setters
+  
     public String getUserId() {
         return userId;
-    } // Fixed method name
+    } 
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -80,7 +80,6 @@ public class Instructor {
         this.createdCourses = createdCourses != null ? createdCourses : new ArrayList<>();
     }
 
-    // Business methods (these should be called through a service layer that has database access)
     public void createCourse(CourseManagement course, CourseDatabase database) {
         if (course != null && database != null) {
             createdCourses.add(course);
@@ -91,9 +90,9 @@ public class Instructor {
     public void editCourse(String courseId, CourseManagement updatedCourse, CourseDatabase database) {
         for (CourseManagement course : createdCourses) {
             if (course.getCourseId().equals(courseId)) {
-                // Update local copy
+           
                 createdCourses.set(createdCourses.indexOf(course), updatedCourse);
-                // Update in database
+              
                 database.editCourse(courseId, updatedCourse);
                 break;
             }

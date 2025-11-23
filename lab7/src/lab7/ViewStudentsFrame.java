@@ -154,7 +154,7 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
             for (String studentId : course.getStudents()) {
                 StudentManagement student = userDatabase.findStudentById(studentId);
                 if (student != null) {
-                    // Calculate progress
+                    
                     int totalLessons = course.getLessons().size();
                     int completedLessons = 0;
                     for (Lesson lesson : course.getLessons()) {
@@ -197,7 +197,6 @@ public class ViewStudentsFrame extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }
 
-    // Helper class for combo box items
     private class CourseComboItem {
         private String id;
         private String title;
