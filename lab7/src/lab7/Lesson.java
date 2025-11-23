@@ -7,8 +7,9 @@ public class Lesson {
     private String title;
     private String content;
     private ArrayList<String> resources;
+    private Quiz quiz;
     
-    public Lesson(String lessonId, String title, String content) { 
+    public Lesson(String lessonId, String title, String content, Quiz quiz) { 
         if (lessonId == null || lessonId.trim().isEmpty()) {
             throw new IllegalArgumentException("Lesson ID cannot be null or empty");
         }
@@ -20,7 +21,17 @@ public class Lesson {
         this.title = title;
         this.content = content != null ? content : "";
         this.resources = new ArrayList<>();
+        this.quiz = new Quiz();
     }
+
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
+    
     
     public Lesson(String lessonId, String title, String content, ArrayList<String> resources) {
         if (lessonId == null || lessonId.trim().isEmpty()) {
