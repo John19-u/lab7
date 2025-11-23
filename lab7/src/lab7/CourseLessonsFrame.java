@@ -154,6 +154,20 @@ public class CourseLessonsFrame extends javax.swing.JFrame {
         Lesson lesson = course.getLessonById(lessonId);
         
         if (lesson != null) {
+             int lessonIndex = course.getLessons().indexOf(lesson);
+
+    if (lessonIndex > 0) {
+        Lesson previousLesson = course.getLessons().get(lessonIndex - 1);
+
+        if (!student.hasCompletedLesson(previousLesson.getLessonId())) {
+            JOptionPane.showMessageDialog(this,
+                    "You need to complete the previous lesson before viewing this one.",
+                    "Access Denied",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    }
+
             ViewLessonFrame lessonFrame = new ViewLessonFrame(student, userDatabase, courseDatabase, course, lesson);
             lessonFrame.setVisible(true);
         }

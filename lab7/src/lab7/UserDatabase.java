@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.*;
 
 public class UserDatabase {
 
@@ -12,6 +13,7 @@ public class UserDatabase {
     private ArrayList<Admin> adminsList;
     private final File file;
     private final Gson gson;
+    private Map<String, List<QuizResult>> quizResults = new HashMap<>();
 
     public UserDatabase(String filename) {
         this.file = new File(filename);
@@ -248,4 +250,15 @@ public class UserDatabase {
         ArrayList<Instructor> instructorsList;
         ArrayList<Admin> adminsList;
     }
+
+    public void saveQuizResult(QuizResult result) {
+        quizResults.putIfAbsent(result.getStudentId(), new ArrayList<>());
+        quizResults.get(result.getStudentId()).add(result);
+    }
+    
+    public List<QuizResult> getQuizResults(String username) {
+    return quizResults.getOrDefault(username, new ArrayList<>());
+    }
+
+
 }
