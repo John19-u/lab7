@@ -29,6 +29,7 @@ public class ViewLessonFrame extends javax.swing.JFrame {
         contentArea = new javax.swing.JTextArea();
         backBtn = new javax.swing.JButton();
         markCompleteBtn = new javax.swing.JButton();
+        takeQuizBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lessonTitleLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -45,19 +46,15 @@ public class ViewLessonFrame extends javax.swing.JFrame {
 
         backBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
         backBtn.setText("Back to Lessons");
-        backBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backBtnActionPerformed(evt);
-            }
-        });
+        backBtn.addActionListener(evt -> backBtnActionPerformed(evt));
 
         markCompleteBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
         markCompleteBtn.setText("Mark as Completed");
-        markCompleteBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                markCompleteBtnActionPerformed(evt);
-            }
-        });
+        markCompleteBtn.addActionListener(evt -> markCompleteBtnActionPerformed(evt));
+
+        takeQuizBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        takeQuizBtn.setText("Take Quiz");
+        takeQuizBtn.addActionListener(evt -> takeQuizBtnActionPerformed(evt));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18));
         jLabel1.setText("Lesson Content");
@@ -81,7 +78,9 @@ public class ViewLessonFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(backBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(markCompleteBtn))
+                        .addComponent(markCompleteBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(takeQuizBtn))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -109,7 +108,8 @@ public class ViewLessonFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(markCompleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(takeQuizBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -118,8 +118,7 @@ public class ViewLessonFrame extends javax.swing.JFrame {
 
     private void loadLessonContent() {
         contentArea.setText(lesson.getContent());
-        
-        
+
         if (lesson.hasResources()) {
             StringBuilder resourcesText = new StringBuilder();
             for (String resource : lesson.getResources()) {
@@ -129,8 +128,7 @@ public class ViewLessonFrame extends javax.swing.JFrame {
         } else {
             resourcesLabel.setText("No resources available");
         }
-        
-    
+
         if (student.hasCompletedLesson(lesson.getLessonId())) {
             markCompleteBtn.setText("Already Completed");
             markCompleteBtn.setEnabled(false);
@@ -145,21 +143,32 @@ public class ViewLessonFrame extends javax.swing.JFrame {
         if (!student.hasCompletedLesson(lesson.getLessonId())) {
             student.markLessonCompleted(lesson.getLessonId());
             userDatabase.editStudent(student.getUserId(), student);
-            
+
             JOptionPane.showMessageDialog(this, "Lesson marked as completed: " + lesson.getTitle(), "Success", JOptionPane.INFORMATION_MESSAGE);
             markCompleteBtn.setText("Already Completed");
             markCompleteBtn.setEnabled(false);
         }
     }
 
-    // Variables declaration - do not modify                     
+    private void takeQuizBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        Quiz lessonQuiz = lesson.getQuiz(); // make sure Lesson has getQuiz() method
+        if (lessonQuiz != null) {
+            QuizFrame quizFrame = new QuizFrame(lessonQuiz, student, userDatabase, lesson);
+            quizFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No quiz available for this lesson.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    // Variables declaration                     
     private javax.swing.JButton backBtn;
+    private javax.swing.JButton markCompleteBtn;
+    private javax.swing.JButton takeQuizBtn;
     private javax.swing.JTextArea contentArea;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lessonTitleLabel;
-    private javax.swing.JButton markCompleteBtn;
     private javax.swing.JLabel resourcesLabel;
     // End of variables declaration                   
 }

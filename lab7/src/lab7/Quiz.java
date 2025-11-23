@@ -1,7 +1,6 @@
-
 package lab7;
-import java.util.*;
 
+import java.util.*;
 
 public class Quiz {
     private List<String> questions;
@@ -23,12 +22,12 @@ public class Quiz {
     public List<String> getQuestions() { 
         return questions; 
     }
+
     public List<String[]> getOptions() { 
         return options; 
     }
+
     public List<Integer> getCorrectAnswers() {
         return correctAnswers;
     }
-
-    
 }
