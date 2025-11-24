@@ -26,6 +26,7 @@ public class StudentDashboard extends javax.swing.JFrame {
         progressBtn = new javax.swing.JButton();
         logoutBtn = new javax.swing.JButton();
         welcomeLabel = new javax.swing.JLabel();
+        certificatesBtn = new javax.swing.JButton(); // New button for certificates
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,6 +68,14 @@ public class StudentDashboard extends javax.swing.JFrame {
         welcomeLabel.setFont(new java.awt.Font("Segoe UI", 1, 16));
         welcomeLabel.setText("Welcome, " + student.getUsername() + "!");
 
+        certificatesBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        certificatesBtn.setText("My Certificates");
+        certificatesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                certificatesBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,6 +91,7 @@ public class StudentDashboard extends javax.swing.JFrame {
                             .addComponent(viewCoursesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(enrollCoursesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(progressBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(certificatesBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(logoutBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
@@ -98,9 +108,11 @@ public class StudentDashboard extends javax.swing.JFrame {
                 .addComponent(enrollCoursesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(progressBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(20, 20, 20)
+                .addComponent(certificatesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
                 .addComponent(logoutBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -124,14 +136,20 @@ public class StudentDashboard extends javax.swing.JFrame {
         progressFrame.setVisible(true);
     }
 
+    private void certificatesBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        
+        StudentCertificatesFrame certificatesFrame = new StudentCertificatesFrame(student, userDatabase, courseDatabase);
+        certificatesFrame.setVisible(true);
+    }
+
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
         logIn loginFrame = new logIn();
         loginFrame.setVisible(true);
     }
- 
-
-    // Variables declaration - do not modify                     
+                
+    private javax.swing.JButton certificatesBtn;
     private javax.swing.JButton enrollCoursesBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton logoutBtn;

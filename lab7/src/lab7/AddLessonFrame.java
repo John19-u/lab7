@@ -9,6 +9,8 @@ public class AddLessonFrame extends javax.swing.JFrame {
     private Instructor instructor;
     private UserDatabase userDatabase;
     private CourseDatabase courseDatabase;
+    private JLabel jLabel6;
+    private JTextField lessonOrderField;
 
     public AddLessonFrame(Instructor instructor, UserDatabase userDatabase, CourseDatabase courseDatabase) {
         this.instructor = instructor;
@@ -35,6 +37,8 @@ public class AddLessonFrame extends javax.swing.JFrame {
         lessonContentArea = new javax.swing.JTextArea();
         addBtn = new javax.swing.JButton();
         backBtn = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        lessonOrderField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,6 +49,11 @@ public class AddLessonFrame extends javax.swing.JFrame {
         jLabel2.setText("Select Course:");
 
         courseComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        courseComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                courseComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel3.setText("Lesson ID:");
@@ -61,6 +70,7 @@ public class AddLessonFrame extends javax.swing.JFrame {
 
         lessonContentArea.setColumns(20);
         lessonContentArea.setRows(5);
+        lessonContentArea.setFont(new java.awt.Font("Segoe UI", 0, 14));
         jScrollPane1.setViewportView(lessonContentArea);
 
         addBtn.setFont(new java.awt.Font("Segoe UI", 1, 14));
@@ -79,6 +89,12 @@ public class AddLessonFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        jLabel6.setText("Lesson Order:");
+
+        lessonOrderField.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        lessonOrderField.setText("0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,9 +109,11 @@ public class AddLessonFrame extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
+                            .addComponent(jLabel6)
                             .addComponent(courseComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lessonIdField)
                             .addComponent(lessonTitleField)
+                            .addComponent(lessonOrderField)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(backBtn)
@@ -121,6 +139,10 @@ public class AddLessonFrame extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(5, 5, 5)
                 .addComponent(lessonTitleField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel6)
+                .addGap(5, 5, 5)
+                .addComponent(lessonOrderField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addComponent(jLabel5)
                 .addGap(5, 5, 5)
@@ -148,6 +170,18 @@ public class AddLessonFrame extends javax.swing.JFrame {
         }
     }
 
+    private void courseComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+        // Auto-calculate next order number when course is selected
+        if (courseComboBox.getSelectedItem() != null) {
+            String courseId = ((CourseComboItem) courseComboBox.getSelectedItem()).getId();
+            CourseManagement course = courseDatabase.findCourseById(courseId);
+            if (course != null) {
+                int nextOrder = course.getLessons().size() + 1;
+                lessonOrderField.setText(String.valueOf(nextOrder));
+            }
+        }
+    }
+
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (courseComboBox.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Please select a course.", "No Course Selected", JOptionPane.WARNING_MESSAGE);
@@ -158,9 +192,23 @@ public class AddLessonFrame extends javax.swing.JFrame {
         String lessonId = lessonIdField.getText().trim();
         String title = lessonTitleField.getText().trim();
         String content = lessonContentArea.getText().trim();
+        String orderText = lessonOrderField.getText().trim();
 
         if (lessonId.isEmpty() || title.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Lesson ID and Title are required.", "Missing Information", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validate order
+        int order;
+        try {
+            order = Integer.parseInt(orderText);
+            if (order < 0) {
+                JOptionPane.showMessageDialog(this, "Lesson order must be a positive number.", "Invalid Order", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Lesson order must be a valid number.", "Invalid Order", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -170,17 +218,34 @@ public class AddLessonFrame extends javax.swing.JFrame {
             return;
         }
 
-        
+        // Check for duplicate lesson ID
         if (course.getLessonById(lessonId) != null) {
             JOptionPane.showMessageDialog(this, "Lesson ID already exists in this course.", "Duplicate Lesson ID", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try {
-            Lesson newLesson = new Lesson(lessonId, title, content);
+            // Use the updated constructor with order
+            Lesson newLesson = new Lesson(lessonId, title, content, order);
             instructor.addLesson(newLesson, courseId, courseDatabase);
             
-            JOptionPane.showMessageDialog(this, "Lesson added successfully: " + title, "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "Lesson added successfully: " + title + "\nYou can now add a quiz to this lesson.", 
+                "Success", 
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            // Ask if they want to add a quiz
+            int option = JOptionPane.showConfirmDialog(this, 
+                "Would you like to create a quiz for this lesson now?", 
+                "Add Quiz?", 
+                JOptionPane.YES_NO_OPTION);
+            
+            if (option == JOptionPane.YES_OPTION) {
+                // Open quiz creation frame
+                CreateQuizFrame quizFrame = new CreateQuizFrame(instructor, courseDatabase, newLesson);
+                quizFrame.setVisible(true);
+            }
+            
             clearForm();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error adding lesson: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -191,6 +256,10 @@ public class AddLessonFrame extends javax.swing.JFrame {
         lessonIdField.setText("");
         lessonTitleField.setText("");
         lessonContentArea.setText("");
+        // Don't clear order field, keep it for next lesson
+        if (courseComboBox.getSelectedItem() != null) {
+            courseComboBoxActionPerformed(null); // Recalculate order
+        }
     }
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,7 +268,6 @@ public class AddLessonFrame extends javax.swing.JFrame {
         dashboard.setVisible(true);
     }
 
-   
     private class CourseComboItem {
         private String id;
         private String title;
@@ -217,7 +285,7 @@ public class AddLessonFrame extends javax.swing.JFrame {
         }
     }
 
-                     
+    // Variables declaration - CORRECTED VERSION
     private javax.swing.JButton addBtn;
     private javax.swing.JButton backBtn;
     private javax.swing.JComboBox<CourseComboItem> courseComboBox;
@@ -226,9 +294,10 @@ public class AddLessonFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField lessonIdField;
     private javax.swing.JTextArea lessonContentArea;
     private javax.swing.JTextField lessonTitleField;
-    // End of variables declaration                   
+    // End of variables declaration
 }

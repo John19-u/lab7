@@ -14,6 +14,7 @@ public class UserDatabase {
     private final File file;
     private final Gson gson;
     private Map<String, List<QuizResult>> quizResults = new HashMap<>();
+    private Map<String, List<Certificate>> certificates = new HashMap<>();
 
     public UserDatabase(String filename) {
         this.file = new File(filename);
@@ -244,21 +245,192 @@ public class UserDatabase {
         return null;
     }
 
-    private static class DatabaseWrapper {
+    
+    public void saveCertificate(Certificate certificate) {
+        certificates.putIfAbsent(certificate.getStudentId(), new ArrayList<>());
+        
+        
+        List<Certificate> studentCertificates = certificates.get(certificate.getStudentId());
+        for (Certificate existingCert : studentCertificates) {
+            if (existingCert.getCourseId().equals(certificate.getCourseId())) {
+              
+                studentCertificates.remove(existingCert);
+                break;
+            }
+        }
+        
+        studentCertificates.add(certificate);
+        saveCertificatesToFile();
+    }
+    
+    public List<Certificate> getCertificatesForStudent(String studentId) {
+        return certificates.getOrDefault(studentId, new ArrayList<>());
+    }
+    
+    public Certificate getCertificateById(String certificateId) {
+        for (List<Certificate> certList : certificates.values()) {
+            for (Certificate cert : certList) {
+                if (cert.getCertificateId().equals(certificateId)) {
+                    return cert;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public Certificate getCertificateForCourse(String studentId, String courseId) {
+        List<Certificate> studentCertificates = getCertificatesForStudent(studentId);
+        for (Certificate cert : studentCertificates) {
+            if (cert.getCourseId().equals(courseId)) {
+                return cert;
+            }
+        }
+        return null;
+    }
+    
+    public boolean hasCertificateForCourse(String studentId, String courseId) {
+        return getCertificateForCourse(studentId, courseId) != null;
+    }
+    
+    private void saveCertificatesToFile() {
+        try {
+            File certFile = new File("certificates.json");
+            PrintWriter pw = new PrintWriter(new FileWriter(certFile));
+            
+            Map<String, Object> certWrapper = new HashMap<>();
+            certWrapper.put("certificates", certificates);
+            
+            pw.print(gson.toJson(certWrapper));
+            pw.close();
+        } catch (Exception e) {
+            System.out.println("Error saving certificates: " + e.getMessage());
+        }
+    }
+    
+    private void loadCertificatesFromFile() {
+        try {
+            File certFile = new File("certificates.json");
+            if (!certFile.exists()) {
+                return;
+            }
+            
+            BufferedReader br = new BufferedReader(new FileReader(certFile));
+            Map<String, Object> certWrapper = gson.fromJson(br, Map.class);
+            br.close();
+            
+            if (certWrapper != null && certWrapper.containsKey("certificates")) {
+               
+                System.out.println("Certificates loaded from file");
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading certificates: " + e.getMessage());
+        }
+    }
 
+    
+    public void saveQuizResult(QuizResult result) {
+        quizResults.putIfAbsent(result.getStudentId(), new ArrayList<>());
+        
+        
+        List<QuizResult> studentResults = quizResults.get(result.getStudentId());
+        for (QuizResult existingResult : studentResults) {
+            if (existingResult.getLessonId().equals(result.getLessonId())) {
+               
+                studentResults.remove(existingResult);
+                break;
+            }
+        }
+        
+        studentResults.add(result);
+        saveQuizResultsToFile();
+    }
+    
+    public List<QuizResult> getQuizResults(String studentId) {
+        return quizResults.getOrDefault(studentId, new ArrayList<>());
+    }
+    
+    public List<QuizResult> getQuizResultsForCourse(String studentId, String courseId) {
+        List<QuizResult> results = new ArrayList<>();
+        for (QuizResult result : getQuizResults(studentId)) {
+            if (result.getCourseId().equals(courseId)) {
+                results.add(result);
+            }
+        }
+        return results;
+    }
+    
+    public QuizResult getQuizResultForLesson(String studentId, String lessonId) {
+        for (QuizResult result : getQuizResults(studentId)) {
+            if (result.getLessonId().equals(lessonId)) {
+                return result;
+            }
+        }
+        return null;
+    }
+    
+    public boolean hasPassedQuiz(String studentId, String lessonId) {
+        QuizResult result = getQuizResultForLesson(studentId, lessonId);
+        return result != null && result.isPassed();
+    }
+    
+    public double getAverageQuizScoreForCourse(String studentId, String courseId) {
+        List<QuizResult> courseResults = getQuizResultsForCourse(studentId, courseId);
+        if (courseResults.isEmpty()) {
+            return 0.0;
+        }
+        
+        double totalScore = 0.0;
+        for (QuizResult result : courseResults) {
+            totalScore += result.getScore();
+        }
+        
+        return totalScore / courseResults.size();
+    }
+    
+    private void saveQuizResultsToFile() {
+        try {
+            File quizFile = new File("quiz_results.json");
+            PrintWriter pw = new PrintWriter(new FileWriter(quizFile));
+            
+            Map<String, Object> quizWrapper = new HashMap<>();
+            quizWrapper.put("quizResults", quizResults);
+            
+            pw.print(gson.toJson(quizWrapper));
+            pw.close();
+        } catch (Exception e) {
+            System.out.println("Error saving quiz results: " + e.getMessage());
+        }
+    }
+    
+    private void loadQuizResultsFromFile() {
+        try {
+            File quizFile = new File("quiz_results.json");
+            if (!quizFile.exists()) {
+                return;
+            }
+            
+            BufferedReader br = new BufferedReader(new FileReader(quizFile));
+            Map<String, Object> quizWrapper = gson.fromJson(br, Map.class);
+            br.close();
+            
+            if (quizWrapper != null && quizWrapper.containsKey("quizResults")) {
+            
+                System.out.println("Quiz results loaded from file");
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading quiz results: " + e.getMessage());
+        }
+    }
+
+    
+    {
+        loadCertificatesFromFile();
+        loadQuizResultsFromFile();
+    }
+
+    private static class DatabaseWrapper {
         ArrayList<StudentManagement> studentsList;
         ArrayList<Instructor> instructorsList;
         ArrayList<Admin> adminsList;
     }
-
-    public void saveQuizResult(QuizResult result) {
-        quizResults.putIfAbsent(result.getStudentId(), new ArrayList<>());
-        quizResults.get(result.getStudentId()).add(result);
-    }
-    
-    public List<QuizResult> getQuizResults(String username) {
-    return quizResults.getOrDefault(username, new ArrayList<>());
-    }
-
-
 }

@@ -11,13 +11,13 @@
           "lessonId": "84444444444",
           "title": "imlff",
           "content": "fdlfmlf",
-          "resources": []
+          "order": 0
         },
         {
           "lessonId": "7777",
           "title": "hhhhhhhhhhhhh",
           "content": "nnnnnnnnnnnn",
-          "resources": []
+          "order": 0
         }
       ],
       "students": [
@@ -44,7 +44,26 @@
           "lessonId": "9999",
           "title": "fjlsjlf",
           "content": "fjjjjjjjjjjjjjj",
-          "resources": []
+          "order": 0
+        }
+      ],
+      "students": [
+        "1111"
+      ]
+    },
+    {
+      "courseId": "1122",
+      "title": "control",
+      "description": "hhhhhhhhhh",
+      "instructorId": "2222",
+      "status": "APPROVED",
+      "lessons": [
+        {
+          "lessonId": "1111",
+          "title": "second order",
+          "content": "ddlfk",
+          "quizId": "38f814e1",
+          "order": 1
         }
       ],
       "students": [

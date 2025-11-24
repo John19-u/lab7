@@ -1,117 +1,54 @@
 package lab7;
 
-import java.util.ArrayList;
-
 public class Lesson {
     private String lessonId;
     private String title;
     private String content;
-    private ArrayList<String> resources;
-    private Quiz quiz;
-
-    public Lesson(String lessonId, String title, String content) {
+    private String quizId; // Reference to associated quiz
+    private int order;
+    
+    public Lesson(String lessonId, String title, String content, int order) {
         this.lessonId = lessonId;
         this.title = title;
         this.content = content;
+        this.order = order;
+        this.quizId = null;
     }
     
-    public Lesson(String lessonId, String title, String content, Quiz quiz) { 
-        if (lessonId == null || lessonId.trim().isEmpty()) {
-            throw new IllegalArgumentException("Lesson ID cannot be null or empty");
-        }
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Lesson title cannot be null or empty");
-        }
-        
+    // Getters and setters
+    public String getLessonId() { return lessonId; }
+    public String getTitle() { return title; }
+    public String getContent() { return content; }
+    public int getOrder() { return order; }
+    public String getQuizId() { return quizId; }
+    public void setQuizId(String quizId) { this.quizId = quizId; }
+    
+    public boolean hasQuiz() {
+        return quizId != null && !quizId.trim().isEmpty();
+    }
+    
+    // For resource compatibility (you can remove if not needed)
+    public boolean hasResources() {
+        return false; // Or implement if you have resources
+    }
+
+    public void setLessonId(String lessonId) {
         this.lessonId = lessonId;
-        this.title = title;
-        this.content = content != null ? content : "";
-        this.resources = new ArrayList<>();
-        this.quiz = new Quiz();
-    }
-
-    public Quiz getQuiz() {
-        return quiz;
-    }
-
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
-    }
-    
-    
-    public Lesson(String lessonId, String title, String content, ArrayList<String> resources) {
-        if (lessonId == null || lessonId.trim().isEmpty()) {
-            throw new IllegalArgumentException("Lesson ID cannot be null or empty");
-        }
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Lesson title cannot be null or empty");
-        }
-        
-        this.lessonId = lessonId;
-        this.title = title;
-        this.content = content != null ? content : "";
-        this.resources = resources != null ? new ArrayList<>(resources) : new ArrayList<>();
-    }
-    
-    
-    public String getLessonId() {
-        return lessonId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public ArrayList<String> getResources() {
-        return new ArrayList<>(resources); 
     }
 
     public void setTitle(String title) {
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Lesson title cannot be null or empty");
-        }
         this.title = title;
     }
 
     public void setContent(String content) {
-        this.content = content != null ? content : "";
+        this.content = content;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
     
-   
-    public void addResource(String resource) {
-        if (resource != null && !resource.trim().isEmpty()) {
-            resources.add(resource);
-        }
-    }
-    
-    public boolean removeResource(String resource) {
-        return resources.remove(resource);
-    }
-    
-    public void clearResources() {
-        resources.clear();
-    }
-    
-    public boolean hasResources() {
-        return !resources.isEmpty();
-    }
-    
-    @Override
-    public String toString() {
-        return "Lesson{" +
-                "lessonId='" + lessonId + '\'' +
-                ", title='" + title + '\'' +
-                ", contentLength=" + (content != null ? content.length() : 0) +
-                ", resourcesCount=" + resources.size() +
-                '}';
-    }
-    
-   
-    public String getDisplayInfo() {
-        return title + " (ID: " + lessonId + ")";
+    public String[] getResources() {
+        return new String[0]; // Or implement if you have resources
     }
 }

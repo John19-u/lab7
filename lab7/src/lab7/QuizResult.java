@@ -44,4 +44,28 @@ public class QuizResult {
         return String.format("QuizResult{score=%.1f%%, passed=%s, questions=%d/%d}", 
                            score, isPassed(), correctAnswers, totalQuestions);
     }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public void setLessonId(String lessonId) {
+        this.lessonId = lessonId;
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setCorrectAnswers(int correctAnswers) {
+        this.correctAnswers = correctAnswers;
+    }
 }

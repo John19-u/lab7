@@ -151,13 +151,32 @@ public class ViewLessonFrame extends javax.swing.JFrame {
     }
 
     private void takeQuizBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        Quiz lessonQuiz = lesson.getQuiz(); // make sure Lesson has getQuiz() method
+        if (lesson.hasQuiz()) {
+        // Get the quiz from quiz service
+        QuizService quizService = new QuizService(); // You'll need to initialize this properly
+        Quiz lessonQuiz = quizService.getQuiz(lesson.getQuizId());
+        
         if (lessonQuiz != null) {
-            QuizFrame quizFrame = new QuizFrame(lessonQuiz, student, userDatabase, lesson);
-            quizFrame.setVisible(true);
+            // Check if student can retry quiz
+            if (quizService.canRetryQuiz(student.getUserId(), lesson.getQuizId()) || 
+                !student.hasPassedQuiz(lesson.getLessonId())) {
+                
+                // Pass the course to QuizFrame - FIXED
+                QuizFrame quizFrame = new QuizFrame(lessonQuiz, student, userDatabase, lesson, course);
+                quizFrame.setVisible(true);
+                this.dispose(); // Close lesson view while taking quiz
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "You have already passed this quiz with maximum attempts.", 
+                    "Quiz Completed", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "No quiz available for this lesson.", "Info", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Quiz not found for this lesson.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "No quiz available for this lesson.", "Info", JOptionPane.INFORMATION_MESSAGE);
+    }
     }
 
     // Variables declaration                     

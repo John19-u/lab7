@@ -49,7 +49,8 @@ public class Usermanagement {
             }
             
             String passwordHash = SHA256Hasher.hashPassword(password);
-            Instructor instructor = new Instructor(userId, "Instructor", username, email, passwordHash);
+      
+            Instructor instructor = new Instructor(username, "Instructor", passwordHash, userId, email);
             userDatabase.addInstructor(instructor);
             return true;
             
