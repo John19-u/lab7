@@ -199,7 +199,7 @@ public class AddLessonFrame extends javax.swing.JFrame {
             return;
         }
 
-        // Validate order
+       
         int order;
         try {
             order = Integer.parseInt(orderText);
@@ -218,14 +218,14 @@ public class AddLessonFrame extends javax.swing.JFrame {
             return;
         }
 
-        // Check for duplicate lesson ID
+     
         if (course.getLessonById(lessonId) != null) {
             JOptionPane.showMessageDialog(this, "Lesson ID already exists in this course.", "Duplicate Lesson ID", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try {
-            // Use the updated constructor with order
+          
             Lesson newLesson = new Lesson(lessonId, title, content, order);
             instructor.addLesson(newLesson, courseId, courseDatabase);
             
@@ -234,14 +234,14 @@ public class AddLessonFrame extends javax.swing.JFrame {
                 "Success", 
                 JOptionPane.INFORMATION_MESSAGE);
             
-            // Ask if they want to add a quiz
+       
             int option = JOptionPane.showConfirmDialog(this, 
                 "Would you like to create a quiz for this lesson now?", 
                 "Add Quiz?", 
                 JOptionPane.YES_NO_OPTION);
             
             if (option == JOptionPane.YES_OPTION) {
-                // Open quiz creation frame
+                
                 CreateQuizFrame quizFrame = new CreateQuizFrame(instructor, courseDatabase, newLesson);
                 quizFrame.setVisible(true);
             }
@@ -256,9 +256,9 @@ public class AddLessonFrame extends javax.swing.JFrame {
         lessonIdField.setText("");
         lessonTitleField.setText("");
         lessonContentArea.setText("");
-        // Don't clear order field, keep it for next lesson
+        
         if (courseComboBox.getSelectedItem() != null) {
-            courseComboBoxActionPerformed(null); // Recalculate order
+            courseComboBoxActionPerformed(null);
         }
     }
 

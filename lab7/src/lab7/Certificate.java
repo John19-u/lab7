@@ -8,7 +8,7 @@ public class Certificate {
     private String studentName;
     private String courseId;
     private String courseTitle;
-    private String issueDate; // Changed from LocalDate to String
+    private String issueDate; 
     private String instructorName;
     private double finalScore;
     
@@ -21,20 +21,20 @@ public class Certificate {
         this.courseTitle = courseTitle;
         this.instructorName = instructorName;
         this.finalScore = finalScore;
-        this.issueDate = java.time.LocalDate.now().toString(); // Store as String
+        this.issueDate = java.time.LocalDate.now().toString();
     }
     
-    // Getters
+    
     public String getCertificateId() { return certificateId; }
     public String getStudentId() { return studentId; }
     public String getStudentName() { return studentName; }
     public String getCourseId() { return courseId; }
     public String getCourseTitle() { return courseTitle; }
-    public String getIssueDate() { return issueDate; } // Return String
+    public String getIssueDate() { return issueDate; } 
     public String getInstructorName() { return instructorName; }
     public double getFinalScore() { return finalScore; }
     
-    // JSON representation for storage
+  
     public String toJson() {
         return String.format(
             "{\"certificateId\":\"%s\",\"studentId\":\"%s\",\"studentName\":\"%s\"," +

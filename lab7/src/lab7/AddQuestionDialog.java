@@ -31,14 +31,14 @@ public class AddQuestionDialog extends JDialog {
         setLayout(new BorderLayout(10, 10));
         setSize(500, 400);
 
-        // Main panel
+        
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Question text
+        
         gbc.gridx = 0; gbc.gridy = 0;
         mainPanel.add(new JLabel("Question:"), gbc);
         gbc.gridx = 1; gbc.gridy = 0; gbc.gridwidth = 2; gbc.weightx = 1.0;
@@ -46,7 +46,7 @@ public class AddQuestionDialog extends JDialog {
         mainPanel.add(questionTextField, gbc);
         gbc.gridwidth = 1; gbc.weightx = 0.0;
 
-        // Options
+        
         optionFields = new JTextField[4];
         for (int i = 0; i < 4; i++) {
             gbc.gridx = 0; gbc.gridy = i + 1;
@@ -57,14 +57,14 @@ public class AddQuestionDialog extends JDialog {
             gbc.gridwidth = 1; gbc.weightx = 0.0;
         }
 
-        // Correct answer
+        
         gbc.gridx = 0; gbc.gridy = 5;
         mainPanel.add(new JLabel("Correct Answer:"), gbc);
         gbc.gridx = 1; gbc.gridy = 5;
         correctAnswerCombo = new JComboBox<>(new String[]{"A", "B", "C", "D"});
         mainPanel.add(correctAnswerCombo, gbc);
 
-        // Points
+        
         gbc.gridx = 0; gbc.gridy = 6;
         mainPanel.add(new JLabel("Points:"), gbc);
         gbc.gridx = 1; gbc.gridy = 6;
@@ -73,7 +73,7 @@ public class AddQuestionDialog extends JDialog {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        // Buttons
+        
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton cancelBtn = new JButton("Cancel");
         cancelBtn.addActionListener(e -> cancel());
@@ -104,13 +104,12 @@ public class AddQuestionDialog extends JDialog {
     }
 
     private void saveQuestion() {
-        // Validate inputs
+        
         if (questionTextField.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter the question text.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Check that at least 2 options are filled
         int filledOptions = 0;
         for (JTextField field : optionFields) {
             if (!field.getText().trim().isEmpty()) {
@@ -124,7 +123,7 @@ public class AddQuestionDialog extends JDialog {
         }
 
         try {
-            // Collect options
+        
             java.util.List<String> options = new java.util.ArrayList<>();
             for (JTextField field : optionFields) {
                 String text = field.getText().trim();
@@ -133,23 +132,20 @@ public class AddQuestionDialog extends JDialog {
                 }
             }
 
-            // Get points
+        
             int points = Integer.parseInt(pointsField.getText());
             if (points <= 0) {
                 JOptionPane.showMessageDialog(this, "Points must be a positive number.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // Create or update question
             if (question == null) {
                 String questionId = "Q" + System.currentTimeMillis();
                 question = new Question(questionId, questionTextField.getText().trim(), 
                                       options, correctAnswerCombo.getSelectedIndex());
             } else {
-                // For existing question, we need to update fields
-                // You might need to add setters to your Question class
-                question = new Question(question.getQuestionId(), questionTextField.getText().trim(),
-                                      options, correctAnswerCombo.getSelectedIndex());
+                
+                question = new Question(question.getQuestionId(), questionTextField.getText().trim(),options, correctAnswerCombo.getSelectedIndex());
             }
             question.setPoints(points);
             

@@ -151,20 +151,38 @@ public class ViewLessonFrame extends javax.swing.JFrame {
     }
 
     private void takeQuizBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        if (lesson.hasQuiz()) {
-        // Get the quiz from quiz service
-        QuizService quizService = new QuizService(); // You'll need to initialize this properly
-        Quiz lessonQuiz = quizService.getQuiz(lesson.getQuizId());
+     System.out.println("DEBUG: Take Quiz button clicked");
+    System.out.println("DEBUG: Lesson ID: " + lesson.getLessonId());
+    System.out.println("DEBUG: Lesson has quiz: " + lesson.hasQuiz());
+    
+    if (lesson.hasQuiz()) {
+        String quizId = lesson.getQuizId();
+        System.out.println("DEBUG: Quiz ID from lesson: " + quizId);
+        
+       
+        QuizService quizService = QuizService.getInstance();
+        Quiz lessonQuiz = quizService.getQuiz(quizId);
+        System.out.println("DEBUG: Found quiz: " + (lessonQuiz != null));
         
         if (lessonQuiz != null) {
-            // Check if student can retry quiz
-            if (quizService.canRetryQuiz(student.getUserId(), lesson.getQuizId()) || 
-                !student.hasPassedQuiz(lesson.getLessonId())) {
-                
-                // Pass the course to QuizFrame - FIXED
+            System.out.println("DEBUG: Quiz title: " + lessonQuiz.getTitle());
+            System.out.println("DEBUG: Quiz questions: " + lessonQuiz.getQuestions().size());
+            
+            if (student.getQuizResult("dummy") == null) {
+   
+                System.out.println("DEBUG: Initialized quizResults for student");
+            }
+    
+            boolean canRetry = quizService.canRetryQuiz(student.getUserId(), quizId);
+            boolean hasPassed = student.hasPassedQuiz(lesson.getLessonId());
+            
+            System.out.println("DEBUG: Can retry: " + canRetry);
+            System.out.println("DEBUG: Has passed: " + hasPassed);
+            
+            if (canRetry || !hasPassed) {
                 QuizFrame quizFrame = new QuizFrame(lessonQuiz, student, userDatabase, lesson, course);
                 quizFrame.setVisible(true);
-                this.dispose(); // Close lesson view while taking quiz
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, 
                     "You have already passed this quiz with maximum attempts.", 
@@ -172,10 +190,16 @@ public class ViewLessonFrame extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Quiz not found for this lesson.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "Quiz not found! This might be a temporary issue. Please try again or contact administrator.\nQuiz ID: " + quizId, 
+                "Quiz Error", 
+                JOptionPane.ERROR_MESSAGE);
         }
     } else {
-        JOptionPane.showMessageDialog(this, "No quiz available for this lesson.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, 
+            "No quiz available for this lesson. Please contact instructor.", 
+            "Info", 
+            JOptionPane.INFORMATION_MESSAGE);
     }
     }
 

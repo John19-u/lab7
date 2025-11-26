@@ -24,7 +24,7 @@ public class StudentManagement {
         this.enrolledCourses = new ArrayList<>();
         this.progress = new ArrayList<>();
         this.certificates = new HashMap<>();
-        this.quizResults = new HashMap<>();
+        this.quizResults = new HashMap<>(); 
     }
 
     public StudentManagement(String username, String role, String passwordHash, String userId, String email, 
@@ -40,7 +40,56 @@ public class StudentManagement {
         this.quizResults = new HashMap<>();
     }
 
+ 
+    public StudentManagement(String username, String role, String passwordHash, String userId, String email, 
+                           ArrayList<String> enrolledCourses, ArrayList<String> progress,
+                           Map<String, Certificate> certificates, Map<String, QuizResult> quizResults) {
+        this.username = username;
+        this.role = role;
+        this.passwordHash = passwordHash;
+        this.userId = userId;
+        this.email = email;
+        this.enrolledCourses = enrolledCourses != null ? enrolledCourses : new ArrayList<>();
+        this.progress = progress != null ? progress : new ArrayList<>();
+        this.certificates = certificates != null ? certificates : new HashMap<>();
+        this.quizResults = quizResults != null ? quizResults : new HashMap<>(); 
+    }
+
+    public boolean hasPassedQuiz(String lessonId) {
+        if (quizResults == null) {
+            quizResults = new HashMap<>();
+            return false;
+        }
+        QuizResult result = quizResults.get(lessonId);
+        return result != null && result.isPassed();
+    }
+
+    public void addQuizResult(QuizResult result) {
+        if (quizResults == null) {
+            quizResults = new HashMap<>();
+        }
+        this.quizResults.put(result.getLessonId(), result);
+    }
+
+    public QuizResult getQuizResult(String lessonId) {
+        if (quizResults == null) {
+            quizResults = new HashMap<>();
+            return null;
+        }
+        return quizResults.get(lessonId);
+    }
+
+    public Map<String, QuizResult> getQuizResults() {
+        if (quizResults == null) {
+            quizResults = new HashMap<>();
+        }
+        return new HashMap<>(quizResults);
+    }
     
+    public void setQuizResults(Map<String, QuizResult> quizResults) {
+        this.quizResults = quizResults != null ? quizResults : new HashMap<>();
+    }
+
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
@@ -72,34 +121,34 @@ public class StudentManagement {
         this.progress = progress != null ? progress : new ArrayList<>();
     }
 
-    
     public Map<String, Certificate> getCertificates() {
+        if (certificates == null) {
+            certificates = new HashMap<>();
+        }
         return new HashMap<>(certificates);
     }
     
     public void addCertificate(Certificate certificate) {
+        if (certificates == null) {
+            certificates = new HashMap<>();
+        }
         this.certificates.put(certificate.getCourseId(), certificate);
     }
     
     public Certificate getCertificateForCourse(String courseId) {
+        if (certificates == null) {
+            certificates = new HashMap<>();
+            return null;
+        }
         return certificates.get(courseId);
     }
     
     public boolean hasCertificateForCourse(String courseId) {
+        if (certificates == null) {
+            certificates = new HashMap<>();
+            return false;
+        }
         return certificates.containsKey(courseId);
-    }
-    
-    public void addQuizResult(QuizResult result) {
-        this.quizResults.put(result.getLessonId(), result);
-    }
-    
-    public QuizResult getQuizResult(String lessonId) {
-        return quizResults.get(lessonId);
-    }
-    
-    public boolean hasPassedQuiz(String lessonId) {
-        QuizResult result = quizResults.get(lessonId);
-        return result != null && result.isPassed();
     }
 
     public void enrollCourse(String courseId) {
@@ -110,7 +159,9 @@ public class StudentManagement {
 
     public void unenrollCourse(String courseId) {
         enrolledCourses.remove(courseId);
-        certificates.remove(courseId); // Remove certificate if unenrolled
+        if (certificates != null) {
+            certificates.remove(courseId); 
+        }
     }
 
     public void markLessonCompleted(String lessonId) {
@@ -127,7 +178,6 @@ public class StudentManagement {
         return enrolledCourses.contains(courseId);
     }
     
-    
     public boolean hasCompletedAllLessons(CourseManagement course) {
         if (course == null) return false;
         
@@ -139,7 +189,6 @@ public class StudentManagement {
         return true;
     }
     
-   
     public boolean hasPassedAllQuizzes(CourseManagement course) {
         if (course == null) return false;
         
@@ -154,6 +203,11 @@ public class StudentManagement {
     public double getAverageQuizScore(CourseManagement course) {
         if (course == null || course.getLessons().isEmpty()) return 0.0;
         
+        if (quizResults == null) {
+            quizResults = new HashMap<>();
+            return 0.0;
+        }
+        
         double totalScore = 0.0;
         int quizCount = 0;
         
@@ -167,5 +221,4 @@ public class StudentManagement {
         
         return quizCount > 0 ? totalScore / quizCount : 0.0;
     }
-  
 }

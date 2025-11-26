@@ -42,7 +42,7 @@ public class CreateQuizFrame extends JFrame {
         loadInstructorCourses();
         setupQuestionsTable();
         
-        // Pre-select the course and lesson if provided
+      
         if (lesson != null) {
             selectLesson(lesson);
         }
@@ -53,24 +53,20 @@ public class CreateQuizFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
-        // Main panel with padding
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // Title
         JLabel titleLabel = new JLabel("Create New Quiz");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        // Form panel
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createTitledBorder("Quiz Details"));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Course selection
         gbc.gridx = 0; gbc.gridy = 0;
         formPanel.add(new JLabel("Course:"), gbc);
         gbc.gridx = 1; gbc.gridy = 0;
@@ -79,7 +75,7 @@ public class CreateQuizFrame extends JFrame {
         courseComboBox.addActionListener(e -> courseSelected());
         formPanel.add(courseComboBox, gbc);
 
-        // Lesson selection
+    
         gbc.gridx = 0; gbc.gridy = 1;
         formPanel.add(new JLabel("Lesson:"), gbc);
         gbc.gridx = 1; gbc.gridy = 1;
@@ -87,7 +83,7 @@ public class CreateQuizFrame extends JFrame {
         lessonComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         formPanel.add(lessonComboBox, gbc);
 
-        // Quiz title
+      
         gbc.gridx = 0; gbc.gridy = 2;
         formPanel.add(new JLabel("Quiz Title:"), gbc);
         gbc.gridx = 1; gbc.gridy = 2;
@@ -95,7 +91,7 @@ public class CreateQuizFrame extends JFrame {
         quizTitleField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         formPanel.add(quizTitleField, gbc);
 
-        // Passing score
+       
         gbc.gridx = 0; gbc.gridy = 3;
         formPanel.add(new JLabel("Passing Score (%):"), gbc);
         gbc.gridx = 1; gbc.gridy = 3;
@@ -103,7 +99,6 @@ public class CreateQuizFrame extends JFrame {
         passingScoreField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         formPanel.add(passingScoreField, gbc);
 
-        // Time limit
         gbc.gridx = 0; gbc.gridy = 4;
         formPanel.add(new JLabel("Time Limit (minutes):"), gbc);
         gbc.gridx = 1; gbc.gridy = 4;
@@ -111,7 +106,7 @@ public class CreateQuizFrame extends JFrame {
         timeLimitField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         formPanel.add(timeLimitField, gbc);
 
-        // Max attempts
+        
         gbc.gridx = 0; gbc.gridy = 5;
         formPanel.add(new JLabel("Max Attempts:"), gbc);
         gbc.gridx = 1; gbc.gridy = 5;
@@ -121,7 +116,7 @@ public class CreateQuizFrame extends JFrame {
 
         mainPanel.add(formPanel, BorderLayout.NORTH);
 
-        // Questions table
+     
         JPanel questionsPanel = new JPanel(new BorderLayout());
         questionsPanel.setBorder(BorderFactory.createTitledBorder("Questions"));
 
@@ -130,7 +125,7 @@ public class CreateQuizFrame extends JFrame {
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Make table non-editable
+                return false; 
             }
         };
         
@@ -140,7 +135,7 @@ public class CreateQuizFrame extends JFrame {
         tableScrollPane.setPreferredSize(new Dimension(500, 150));
         questionsPanel.add(tableScrollPane, BorderLayout.CENTER);
 
-        // Question buttons
+      
         JPanel questionButtonsPanel = new JPanel(new FlowLayout());
         addQuestionBtn = new JButton("Add Question");
         addQuestionBtn.addActionListener(e -> addQuestion());
@@ -158,7 +153,7 @@ public class CreateQuizFrame extends JFrame {
 
         mainPanel.add(questionsPanel, BorderLayout.CENTER);
 
-        // Action buttons
+        
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         backBtn = new JButton("Back");
         backBtn.addActionListener(e -> goBack());
@@ -200,15 +195,15 @@ public class CreateQuizFrame extends JFrame {
     }
 
     private void selectLesson(Lesson targetLesson) {
-        // Find and select the course that contains this lesson
+        
         for (int i = 0; i < courseComboBox.getItemCount(); i++) {
             CourseComboItem courseItem = courseComboBox.getItemAt(i);
             CourseManagement course = courseDatabase.findCourseById(courseItem.getId());
             if (course != null && course.getLessonById(targetLesson.getLessonId()) != null) {
                 courseComboBox.setSelectedIndex(i);
-                courseSelected(); // Load lessons for this course
+                courseSelected();
                 
-                // Select the target lesson
+               
                 for (int j = 0; j < lessonComboBox.getItemCount(); j++) {
                     LessonComboItem lessonItem = lessonComboBox.getItemAt(j);
                     if (lessonItem.getId().equals(targetLesson.getLessonId())) {
@@ -220,7 +215,7 @@ public class CreateQuizFrame extends JFrame {
             }
         }
         
-        // Auto-generate quiz title
+        
         quizTitleField.setText("Quiz: " + targetLesson.getTitle());
     }
 
@@ -291,7 +286,7 @@ public class CreateQuizFrame extends JFrame {
     }
 
     private void createQuiz() {
-        // Validate inputs
+        
         if (lessonComboBox.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Please select a lesson.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -308,19 +303,19 @@ public class CreateQuizFrame extends JFrame {
         }
 
         try {
-            // Get lesson ID
+            
             String lessonId = ((LessonComboItem) lessonComboBox.getSelectedItem()).getId();
             
-            // Create quiz
+           
             String quizId = UUID.randomUUID().toString().substring(0, 8);
             Quiz quiz = new Quiz(quizId, lessonId, quizTitleField.getText().trim());
             
-            // Set quiz properties
+            
             quiz.setPassingScore(Integer.parseInt(passingScoreField.getText()));
             quiz.setTimeLimit(Integer.parseInt(timeLimitField.getText()));
             quiz.setMaxAttempts(Integer.parseInt(maxAttemptsField.getText()));
             
-            // Add questions
+            
             for (Question question : questions) {
                 quiz.addQuestion(question);
             }
@@ -328,11 +323,11 @@ public class CreateQuizFrame extends JFrame {
             // Save quiz
             quizService.addQuiz(quiz);
             
-            // Link quiz to lesson
+            
             Lesson selectedLesson = getSelectedLesson();
             if (selectedLesson != null) {
                 selectedLesson.setQuizId(quizId);
-                // Update lesson in database
+               
                 CourseManagement course = getSelectedCourse();
                 if (course != null) {
                     instructor.editLesson(selectedLesson.getLessonId(), course.getCourseId(), selectedLesson, courseDatabase);
@@ -384,7 +379,7 @@ public class CreateQuizFrame extends JFrame {
         this.dispose();
     }
 
-    // Combo item classes
+    
     private class CourseComboItem {
         private String id;
         private String title;

@@ -4,21 +4,36 @@ package lab7;
 import java.util.*;
 
 public class QuizService {
+    private static QuizService instance;
     private Map<String, Quiz> quizzes;
     private Map<String, List<QuizAttempt>> quizAttempts;
     
     public QuizService() {
-        this.quizzes = new HashMap<>();
+       this.quizzes = new HashMap<>();
         this.quizAttempts = new HashMap<>();
+        System.out.println("DEBUG: QuizService singleton initialized");
     }
-    
+        public static QuizService getInstance() {
+        if (instance == null) {
+            instance = new QuizService();
+        }
+        return instance;
+    }
+       public static void resetInstance() {
+        instance = null;
+    }
     public void addQuiz(Quiz quiz) {
-        quizzes.put(quiz.getQuizId(), quiz);
+           quizzes.put(quiz.getQuizId(), quiz);
         quizAttempts.put(quiz.getQuizId(), new ArrayList<>());
+        System.out.println("DEBUG: Quiz added - ID: " + quiz.getQuizId() + ", Title: " + quiz.getTitle());
+        System.out.println("DEBUG: Total quizzes in service: " + quizzes.size());
     }
     
     public Quiz getQuiz(String quizId) {
-        return quizzes.get(quizId);
+         Quiz quiz = quizzes.get(quizId);
+        System.out.println("DEBUG: Looking for quiz ID: " + quizId);
+        System.out.println("DEBUG: Available quiz IDs: " + quizzes.keySet());
+        return quiz;
     }
     
     public Quiz getQuizByLessonId(String lessonId) {
@@ -33,7 +48,7 @@ public class QuizService {
         Quiz quiz = quizzes.get(quizId);
         QuizAttempt attempt = new QuizAttempt(attemptId, studentId, quizId, quiz.getLessonId());
         
-        // Set attempt number based on previous attempts
+        
         List<QuizAttempt> attempts = getQuizAttempts(studentId, quizId);
         attempt.setAttemptNumber(attempts.size() + 1);
         
@@ -62,11 +77,23 @@ public class QuizService {
     }
     
     public boolean isLessonAccessible(String studentId, String lessonId, StudentManagement student) {
-        // Check if student has passed the previous lesson's quiz
-        // This implements the "prevent access to next lessons" feature
-        // You'll need to implement the logic based on your course structure
         
-        // For now, return true - you can enhance this later
         return true;
+    }
+
+    public Map<String, Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(Map<String, Quiz> quizzes) {
+        this.quizzes = quizzes;
+    }
+
+    public Map<String, List<QuizAttempt>> getQuizAttempts() {
+        return quizAttempts;
+    }
+
+    public void setQuizAttempts(Map<String, List<QuizAttempt>> quizAttempts) {
+        this.quizAttempts = quizAttempts;
     }
 }

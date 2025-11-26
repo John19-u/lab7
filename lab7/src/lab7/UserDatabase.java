@@ -74,12 +74,16 @@ public class UserDatabase {
     }
 
     public StudentManagement findStudentById(String id) {
-        for (StudentManagement s : studentsList) {
-            if (s.getUserId().equals(id)) {
-                return s;
+        for (StudentManagement student : studentsList) {
+        if (student.getUserId().equals(id)) {
+            // Ensure quizResults is initialized
+            if (student.getQuizResult("any") == null) {
+                // This will trigger the initialization in the getter
             }
+            return student;
         }
-        return null;
+    }
+    return null;
     }
 
     public StudentManagement findStudentByEmail(String email) {

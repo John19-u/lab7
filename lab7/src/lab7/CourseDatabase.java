@@ -10,7 +10,7 @@ public class CourseDatabase {
     private ArrayList<CourseManagement> coursesList;
     private final File file;
     private final Gson gson;
-
+  private QuizService quizService;
     public CourseDatabase(String filename) {
         this.file = new File(filename);
         this.gson = new GsonBuilder().setPrettyPrinting().create();
